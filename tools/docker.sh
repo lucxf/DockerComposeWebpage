@@ -82,4 +82,4 @@ else
     echo "Docker se ha instalado correctamente."
 fi
 
-echo "Docker instalado correctamente"
+echo -e "\033[31mDocker instalado correctamente\033[0m"

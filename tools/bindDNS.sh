@@ -142,7 +142,7 @@ if ! sudo ufw status; then
     exit 1
 fi
 
-echo "Instalación y configuración completada con éxito."
+echo -e "\033[31mInstalación y configuración completada con éxito.\033[0m"
 
 # Fin del script
 exit 0

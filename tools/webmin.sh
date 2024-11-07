@@ -72,4 +72,4 @@ if ! sudo ufw status; then
     log_error "Error al verificar el estado del firewall."
 fi
 
-echo "Webmin instalado correctamente"
+echo -e "\033[31mWebmin instalado correctamente\033[0m"
