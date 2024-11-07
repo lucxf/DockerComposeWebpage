@@ -43,11 +43,11 @@ if ! sudo apt install webmin -y; then
     log_error "Error al instalar Webmin."
 fi
 
-# Comprobamos el estado de Webmin
-echo -e "\033[34mComprobando el estado de Webmin...\033[0m"
-if ! sudo systemctl status webmin; then
-    log_error "Error al comprobar el estado de Webmin."
-fi
+# # Comprobamos el estado de Webmin
+# echo -e "\033[34mComprobando el estado de Webmin...\033[0m"
+# if ! sudo systemctl status webmin; then
+#     log_error "Error al comprobar el estado de Webmin."
+# fi
 
 # Comprobamos la versión de Webmin
 echo -e "\033[34mComprobando la versión de Webmin...\033[0m"
