@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Archivo de log
-LOGFILE="/var/log/docker_installation.log"
+LOGFILE="/var/log/Project/docker_installation.log"
 
 # Función para escribir errores en el log
 log_error() {

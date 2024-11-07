@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Archivo de log
-LOGFILE="/var/log/webmin_installation.log"
+LOGFILE="/var/log/Project/webmin_installation.log"
 
 # Función para escribir errores en el log
 log_error() {
