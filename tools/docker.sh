@@ -6,6 +6,7 @@ LOGFILE="/var/log/Project/docker_installation.log"
 # Función para escribir errores en el log
 log_error() {
     echo "$(date) - ERROR: $1" | tee -a $LOGFILE
+    echo "\033[31$(date) - ERROR: $1\033[0m"
 }
 
 # Eliminar archivos de paquetes .deb que ya no se pueden descargar

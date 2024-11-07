@@ -6,6 +6,7 @@ LOGFILE="/var/log/Project/bind_installation.log"
 # Función para escribir errores en el log
 log_error() {
     echo "$(date) - ERROR: $1" | tee -a $LOGFILE
+    echo "\033[31$(date) - ERROR: $1\033[0m"
 }
 
 # Comenzamos la instalación de BIND DNS

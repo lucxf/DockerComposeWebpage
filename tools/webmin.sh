@@ -6,6 +6,7 @@ LOGFILE="/var/log/Project/webmin_installation.log"
 # Función para escribir errores en el log
 log_error() {
     echo "$(date) - ERROR: $1" | tee -a $LOGFILE
+    echo "\033[31$(date) - ERROR: $1\033[0m"
 }
 
 # Antes de instalar la herramienta, actualizamos los paquetes disponibles en los repositorios
