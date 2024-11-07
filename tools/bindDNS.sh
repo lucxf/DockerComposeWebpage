@@ -22,11 +22,11 @@ if ! sudo apt install -y bind9 bind9utils bind9-doc; then
 fi
 
 # Verificamos que el servicio de BIND esté funcionando
-echo "Comprobando el estado de BIND..."
-if ! sudo systemctl status bind9; then
-    log_error "BIND DNS no está corriendo correctamente después de la instalación."
-    exit 1
-fi
+# echo "Comprobando el estado de BIND..."
+# if ! sudo systemctl status bind9; then
+#     log_error "BIND DNS no está corriendo correctamente después de la instalación."
+#     exit 1
+# fi
 
 # Configuración de la zona DNS
 
