@@ -19,11 +19,11 @@ if ! sudo apt-get autoclean -y; then
     log_error "Error al ejecutar 'apt-get autoclean'."
 fi
 
-# Eliminar versiones antiguas de Docker o paquetes conflictivos
-echo -e "\033[34mEliminando versiones antiguas de Docker...\033[0m"
-if ! sudo apt-get remove -y docker docker-engine docker.io containerd runc; then
-    log_error "Error al ejecutar 'apt-get remove' para Docker."
-fi
+# # Eliminar versiones antiguas de Docker o paquetes conflictivos
+# echo -e "\033[34mEliminando versiones antiguas de Docker...\033[0m"
+# if ! sudo apt-get remove -y docker docker-engine docker.io containerd runc; then
+#     log_error "Error al ejecutar 'apt-get remove' para Docker."
+# fi
 
 # Limpiar cualquier paquete obsoleto o dependencias innecesarias
 echo -e "\033[34mLimpiando dependencias obsoletas...\033[0m"
