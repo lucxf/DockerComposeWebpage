@@ -1,0 +1,138 @@
+
+
+############################################################################################
+#                                                                                          #
+# Introducció (wordpress-traefik-kuma-Docker):                               15/07/2022    #
+#                                                                                          #
+# WordPress és un sistema de gestió de continguts (CMS) que permet crear i mantenir des    #
+# d'un bloc fins a una botiga virtual passant per tota mena de webs. Aquest CMS està       #
+# implementat mitjançant 6 serveis (traefik, MariaDB, Wordpress, Nginx, Redis, kuma).      #
+#                                                                                          #
+# - El servei Traefik consisteix en un servidor intermediari invers que s'encarrega de     #
+#   rebre totes les peticions http/https i les reenvia al servei adequat, utilitzant       #
+#   protocol http només a la xarxa interna de Docker. El servei Traefik gestiona de forma  #
+#   automàtica la creació/actualització dels certificats ssl, també és capaç de detectar a #
+#   quin servei web/webdav/altres ha d'enviar les peticions http sempre que hagin estat    #
+#   implementats amb Docker, per aquest motiu cal aportar unes ' labels' concretes a la    #
+#   configuració del servei web/webdav/altres docker.                                      #
+#   També cal generar un usuari administrador per accedir a la web de control de Traefik   #
+#                                                                                          #
+# - El servei MariaDB consisteix a la Base de Dades que emmagatzema la informació de       #
+#   Wordpress en un Volum.                                                                 #
+#                                                                                          #
+# - El servei WordPress consisteix en la implementació del codi php, la versió utilitzada  #
+#   no inclou el servidor web, al seu lloc habilita el port 9000 per a la comunicació amb  #
+#   el servei web, per exemple nginx.                                                      #
+#                                                                                          #
+# - El servei Nginx consisteix al servidor de pagines web, la configuració establerta als  #
+#   contenidors permet la comunicació amb el servei Wordpress mitjançant el port 9000.     #
+#                                                                                          #
+# - El servei Redis consisteix en una Base de Dades en RAM, que actua com a memòria cache  #
+#   d'objectes web i per tant accelera la càrrega de la pàgina web.                        #
+#                                                                                          #
+# - El servei Kuma (uptime-kuma) consisteix en un potent sistema de monitoratge de pàgines #
+#   web, que integra diferents mètriques i notificacions d'incidències a través de Telegran#
+#   o altres xarxes.                                                                       #
+#                                                                                          #
+# La solució donada amb docker-compose utilitza dos fitxers '.env i wp.env' amb variables  #
+# d'entorn que s'han de modificar amb les rutes finals dels volums que es vulguin          #
+# utilitzar, noms públics 'fqdn' i 'host_name_proxy' del servidor on es desplega el servei #
+# Wordpress-traefik-Docker, així com els usuaris i password de la DB-wp.                   #
+#                                                                                          #
+# Reviseu l'script 'config-wordpress-traefik-server.sh', línies de 10 a 35, i executeu per #
+# a una inicialització dels serveis.                                                       #
+#                                                                                          #
+# Un cop iniciats els serveis caldrà instal·lar Wordpress des de la web i descarregar el   #
+# plugin "Redis Object Cache" i activar-lo, consultar link per a més informació.           #
+#                                                                                          #
+# links:                                                                                   #
+#    https://github.com/atareao/self-hosted                                                #
+#    https://atareao.es/tutorial/self-hosted/wordpress-en-docker-y-con-redis/              #
+#                                                                                          #
+#   * Cómo crear una Tienda Online en WordPress y WooCommerce:                             #
+#       https://www.youtube.com/watch?v=ZQTBAalJWCU                                        #
+#                                                                                          #
+############################################################################################
+
+
+
+####################################################################
+#                                                                  #
+# Passes a realitzar en la primera instal·lació:                   #
+#     - modificar l'script config-wordpress-traefik-kuma-server.sh #
+#     - executar l'script config-wordpress-traefik-kuma-server.sh  #
+#     - verificació de l'estat                                     #
+#                                                                  #
+####################################################################
+
+#1)  modificar ./config-wordpress-traefik-kuma-server.sh, línies de la 8 a la 20
+
+#2)  ./config-wordpress-traefik-kuma-server.sh
+
+#3)  docker-compose -f mycompose-wordpress-traefik-kuma-server.yml logs -t
+
+
+
+###############################################################
+#                                                             #
+# activació del servei wordpress i creació de contenidors     #
+# verificació de l'estat                                      #
+#                                                             #
+###############################################################
+
+#1)  docker-compose -f mycompose-wordpress-traefik-kuma-server.yml up -d
+
+#2)  docker-compose -f mycompose-wordpress-traefik-kuma-server.yml logs traefik -t
+
+#3)  docker-compose -f mycompose-wordpress-traefik-kuma-server.yml logs webdav -t
+
+
+###############################################################
+#                                                             #
+# desactivació del servei wordpress, eliminació dels          #
+# contenidors i conservació de les configuracions.            #
+#                                                             #
+###############################################################
+
+#1)  docker-compose -f mycompose-webdav-traefik-kuma-server.yml down
+
+
+
+###############################################################
+#                                                             #
+# Eliminació del servei wordpress, configuracions i dades     #
+#                                                             #
+###############################################################
+
+#1)  docker-compose -f mycompose-webdav-traefik-kuma-server.yml down
+
+#2)  rm -r /volums/wordpress-traefik-kuma/
+
+
+
+############################################################
+#                                                          #
+# Eliminació de les imatges temporals                      #
+#                                                          #
+############################################################
+
+#1)  docker images -f dangling=true -q | xargs -r docker rmi
+
+
+
+############################################################
+#                                                          #
+# Altres accions                                           #
+#                                                          #
+############################################################
+
+#1)  docker-compose -f mycompose-wordpress-traefik-kuma-server.yml stop
+
+#1)  docker-compose -f mycompose-wordpress-traefik-kuma-server.yml start
+
+#1)  docker-compose -f mycompose-wordpress-traefik-kuma-server.yml restart
+
+
+
+
+

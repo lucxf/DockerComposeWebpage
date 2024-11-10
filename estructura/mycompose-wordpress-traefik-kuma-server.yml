@@ -1,0 +1,120 @@
+version: '2.2'
+services:
+   wpdb: # default port 3306
+      container_name: wpdb
+      image: mariadb
+      restart: always
+      volumes:
+         - ${DIR_WPDB}:/var/lib/mysql
+      env_file:
+         - wp.env
+      networks:
+         - internal
+
+   wpnginx: # default port 80
+      container_name: wpnginx
+      image: nginx:stable-alpine
+      restart: always
+      volumes:
+         - /etc/localtime:/etc/localtime:ro
+         - /etc/timezone:/etc/timezone:ro
+         - ${DIR_WPWWW}:/var/www/html
+         - ${DIR_LOGS_NGINX}:/var/log/nginx/
+         - ./conf/nginx-wp:/etc/nginx/
+      links:
+         - wp
+      labels:
+         - traefik.enable=true
+         - traefik.http.services.wordpress.loadbalancer.server.port=80
+         - traefik.http.routers.wordpress.entrypoints=web
+         - traefik.http.routers.wordpress.rule=Host(`${FQDN}`)
+         - traefik.http.middlewares.wordpress-https-redirect.redirectscheme.scheme=websecure
+         - traefik.http.routers.wordpress.middlewares=wordpress-https-redirect
+         - traefik.http.routers.wordpress-secure.entrypoints=websecure
+         - traefik.http.routers.wordpress-secure.rule=Host(`${FQDN}`)
+         - traefik.http.routers.wordpress-secure.tls=true
+         - traefik.http.routers.wordpress-secure.tls.certresolver=letsencrypt
+      networks:
+         - xarxa_proxy
+         - internal
+
+   wp: # default port 9000
+      container_name: wp
+      image: wordpress:6.0.0-php8.0-fpm-alpine
+      restart: always
+      volumes:
+         - /etc/localtime:/etc/localtime:ro
+         - /etc/timezone:/etc/timezone:ro
+         - ./conf/php.ini:/usr/local/etc/php/php.ini
+         - ${DIR_WPWWW}:/var/www/html
+      depends_on:
+         - wpdb
+      environment:
+         - WORDPRESS_DB_HOST=wpdb
+         - WORDPRESS_TABLE_PREFIX=TU0SgN
+         - WORDPRESS_DEBUG=true
+      env_file:
+         - wp.env
+      networks:
+         - internal
+
+   wpredis: # default port 6379
+      container_name: wpredis
+      image: redis:6
+      restart: always
+      volumes:
+         - ${DIR_REDIS_INFO}:/data
+      networks:
+         - internal
+
+   traefik: # default port 80 i 443
+      image: traefik:v2.7.1
+      container_name: traefik
+      restart: always
+      security_opt:
+         - no-new-privileges:true
+      networks:
+         - xarxa_proxy
+      ports:
+         - 80:80
+         - 443:443
+      volumes:
+         - /etc/localtime:/etc/localtime:ro
+         - /var/run/docker.sock:/var/run/docker.sock:ro
+         - ./traefik.yml:/traefik.yml:ro
+         - ./users.txt:/users.txt:ro
+         - ${FILE_TRAEFIK_DATA}:/acme.json
+      labels:
+         - traefik.enable=true
+         - traefik.http.middlewares.basicauth.basicauth.usersfile=/users.txt
+         - traefik.http.routers.traefik-secure.entrypoints=websecure
+         - traefik.http.routers.traefik-secure.rule=Host(`${HOST_NAME_PROXY}`)
+         - traefik.http.routers.traefik-secure.middlewares=basicauth
+         - traefik.http.routers.traefik-secure.tls=true
+         - traefik.http.routers.traefik-secure.tls.certresolver=letsencrypt
+         - traefik.http.routers.traefik-secure.service=api@internal
+
+   uptime_kuma: # default port 3001
+      image: louislam/uptime-kuma:1
+      container_name: uptime_kuma
+      restart: always
+      networks:
+         - xarxa_proxy
+      volumes:
+         - ${DIR_KUMA_INFO}:/app/data
+      labels:
+         - traefik.enable=true
+         - traefik.http.services.uptime_kuma.loadbalancer.server.port=3001
+         - traefik.http.routers.uptime_kuma-secure.entrypoints=websecure
+         - traefik.http.routers.uptime_kuma-secure.rule=Host(`${FQDN_KUMA}`)
+         - traefik.http.routers.uptime_kuma-secure.tls=true
+         - traefik.http.routers.uptime_kuma-secure.tls.certresolver=letsencrypt
+
+networks:
+   xarxa_proxy:
+      name: xarxa_proxy
+   internal:
+      name: internal
+
+
+
