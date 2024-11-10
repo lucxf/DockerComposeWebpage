@@ -2,6 +2,10 @@
 
 # Archivo de log
 LOGFILE="/var/log/Project/bind_installation.log"
+# Zona DNS
+DOMAIN="prueba.local.loc"
+IP=192.168.0.155
+
 
 # Función para escribir errores en el log y mostrar el mensaje en rojo
 log_error() {
@@ -32,13 +36,24 @@ fi
 
 # Configuración de la zona DNS
 
-# Creamos el archivo de zona para 'prueba.local.loc'
-ZONE_FILE="/etc/bind/db.prueba.local.loc"
-echo -e "\033[34mCreando el archivo de zona DNS para prueba.local.loc...\033[0m"
+# Creamos el archivo de zona para '$DOMAIN'
+ZONE_FILE="/etc/bind/db.$DOMAIN"
+echo -e "\033[34mCreando el archivo de zona DNS para $DOMAIN...\033[0m"
+
+cat << EOF > /etc/bind/named.conf.local
+  zone "$DOMAIN" {
+    type master;
+    file "/etc/bind/$DOMAIN";
+};
+EOF
+
+if [ $? -ne 0 ]; then
+    log_error "Error al crear el archivo de zona '$ZONE_FILE'."
+fi
 
 cat <<EOF | sudo tee $ZONE_FILE > /dev/null
 \$TTL 38400  ; Temps (seg) de vida per defecte (TIME TO LIVE GLOBAL, TEMPS QUE ES GUARDEN EN CACHE ELS REGISTRES)
-prueba.local.loc. IN SOA ns1.prueba.local.loc. lucxf.prueba.local.loc. (
+$DOMAIN. IN SOA ns1.$DOMAIN. lucxf.$DOMAIN. (
     2010120416 ; Serial
     10800      ; Refresh
     3600       ; Retry
@@ -47,15 +62,15 @@ prueba.local.loc. IN SOA ns1.prueba.local.loc. lucxf.prueba.local.loc. (
 )
 
 ; DNS Servers
-prueba.local.loc. IN NS ns1.prueba.local.loc.
+$DOMAIN. IN NS ns1.$DOMAIN.
 
 ; Direcciones IP
-prueba.local.loc. IN A 192.168.0.155
-ns1.prueba.local.loc. IN A 192.168.0.155
-www.prueba.local.loc. IN A 192.168.0.155
-kuma.prueba.local.loc. IN A 192.168.0.155
-traefic.prueba.local.loc. IN A 192.168.0.155
-nextcloud.prueba.local.loc. IN A 192.168.0.155
+$DOMAIN. IN A $IP
+ns1.$DOMAIN. IN A $IP
+www.$DOMAIN. IN A $IP
+kuma.$DOMAIN. IN A $IP
+traefic.$DOMAIN. IN A $IP
+nextcloud.$DOMAIN. IN A $IP
 EOF
 
 if [ $? -ne 0 ]; then
@@ -98,7 +113,7 @@ fi
 echo -e "\033[34mConfigurando la zona en named.conf.local...\033[0m"
 ZONE_CONF="/etc/bind/named.conf.local"
 
-if ! sudo bash -c "echo 'zone \"prueba.local.loc\" { type master; file \"/etc/bind/db.prueba.local.loc\"; };' >> $ZONE_CONF"; then
+if ! sudo bash -c "echo 'zone \"$DOMAIN\" { type master; file \"/etc/bind/db.$DOMAIN\"; };' >> $ZONE_CONF"; then
     log_error "Error al añadir la configuración de la zona en '$ZONE_CONF'."
 fi
 
@@ -110,7 +125,7 @@ fi
 
 # Comprobamos si BIND está funcionando correctamente
 echo -e "\033[34mVerificando la zona DNS...\033[0m"
-if ! sudo named-checkzone prueba.local.loc /etc/bind/db.prueba.local.loc; then
+if ! sudo named-checkzone $DOMAIN /etc/bind/db.$DOMAIN; then
     log_error "Error al comprobar la zona DNS con 'named-checkzone'."
 fi
 
