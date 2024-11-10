@@ -37,7 +37,7 @@ fi
 # Configuración de la zona DNS
 
 # Creamos el archivo de zona para '$DOMAIN'
-ZONE_FILE="/etc/bind/db.$DOMAIN"
+ZONE_FILE="/etc/bind/$DOMAIN"
 echo -e "\033[34mCreando el archivo de zona DNS para $DOMAIN...\033[0m"
 
 cat << EOF > /etc/bind/named.conf.local
@@ -125,7 +125,7 @@ fi
 
 # Comprobamos si BIND está funcionando correctamente
 echo -e "\033[34mVerificando la zona DNS...\033[0m"
-if ! sudo named-checkzone $DOMAIN /etc/bind/db.$DOMAIN; then
+if ! sudo named-checkzone $DOMAIN /etc/bind/$DOMAIN; then
     log_error "Error al comprobar la zona DNS con 'named-checkzone'."
 fi
 
