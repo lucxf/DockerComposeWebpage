@@ -100,8 +100,9 @@ options {
     // necesitarás actualizar tus claves. Más detalles en:
     // https://www.isc.org/bind-keys
     dnssec-validation auto;
-
+    listen-on { any; };
     listen-on-v6 { any; };
+    allow-query { any; };
 };
 EOF
 
