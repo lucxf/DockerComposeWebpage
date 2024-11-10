@@ -109,13 +109,13 @@ if [ $? -ne 0 ]; then
     log_error "Error al crear el archivo de opciones de BIND '/etc/bind/named.conf.options'."
 fi
 
-# Añadimos la configuración de la zona en named.conf.local
-echo -e "\033[34mConfigurando la zona en named.conf.local...\033[0m"
-ZONE_CONF="/etc/bind/named.conf.local"
+# # Añadimos la configuración de la zona en named.conf.local
+# echo -e "\033[34mConfigurando la zona en named.conf.local...\033[0m"
+# ZONE_CONF="/etc/bind/named.conf.local"
 
-if ! sudo bash -c "echo 'zone \"$DOMAIN\" { type master; file \"/etc/bind/db.$DOMAIN\"; };' >> $ZONE_CONF"; then
-    log_error "Error al añadir la configuración de la zona en '$ZONE_CONF'."
-fi
+# if ! sudo bash -c "echo 'zone \"$DOMAIN\" { type master; file \"/etc/bind/db.$DOMAIN\"; };' >> $ZONE_CONF"; then
+#     log_error "Error al añadir la configuración de la zona en '$ZONE_CONF'."
+# fi
 
 # Recargamos BIND para que cargue la nueva configuración
 echo -e "\033[34mRecargando BIND...\033[0m"
