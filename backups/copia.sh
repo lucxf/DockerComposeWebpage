@@ -71,7 +71,7 @@ fi
 
 # Obtenemos los archivos del directorio ordenados alfabéticamente
 echo -e "\033[34mObteniendo archivos del directorio y ordenándolos...\033[0m"
-backups=($(ls -v /test/backups))
+backups=($(ls -v $DIR_FINAL_BKP))
 
 # Comprobamos si el array está vacío
 if [ ${#backups[@]} -eq 0 ]; then
