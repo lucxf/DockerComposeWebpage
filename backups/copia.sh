@@ -9,7 +9,7 @@ DIR_LOCAL_BKP="/etc/backups"
 # Directorio donde están los volúmenes
 DIR_ORIGIONAL="/volums/wordpress-traefik-kuma"
 # Path del fichero docker-compose
-DCOMPOSE_PATH="/home/sds/estructura/mycompose-wordpress-traefik-kuma-server.yml"
+DCOMPOSE_PATH="../estructura/mycompose-wordpress-traefik-kuma-server.yml"
 # IP de la máquina de backups
 IP=100.115.56.56
 # Archivo de log
@@ -52,6 +52,17 @@ if ! ping -c 10 $IP; then
     log_error "Error al conectar con la máquina de backups."
 fi
 
+# Comprobamos si hay archivos en el directorio de origen
+echo -e "\033[34mComprobando si hay copias de seguridad en local...\033[0m"
+if [ "$(ls -A $DIR_LOCAL_BKP)" ]; then
+    echo -e "\033[34mArchivos encontrados, moviendo a /test/backups...\033[0m"
+    if ! mv $DIR_LOCAL_BKP/* $DIR_FINAL_BKP; then
+        log_error "Error al mover los archivos del directorio de origen a $DIR_FINAL_BKP."
+    fi
+else
+    echo -e "\033[33mNo se encontraron copias de seguridad en local .\033[0m"
+fi
+
 # Movemos el archivo comprimido al directorio final de backups
 echo -e "\033[34mMoviendo el backup a la ubicación final...\033[0m"
 if ! mv $DIR_LOCAL_BKP/$date.tar.gz $DIR_FINAL_BKP; then
@@ -63,6 +74,23 @@ echo -e "\033[34mLevantando los contenedores...\033[0m"
 if ! docker compose -f $DCOMPOSE_PATH up -d; then
     log_error "Error al levantar los contenedores."
 fi
+
+# Obtenemos los archivos del directorio ordenados alfabéticamente
+echo -e "\033[34mObteniendo archivos del directorio y ordenándolos...\033[0m"
+backups=($(ls -v /test/backups))
+
+# Comprobamos si el array está vacío
+if [ ${#backups[@]} -eq 0 ]; then
+    # Si no se encuentran archivos, mostramos un mensaje informando
+    echo -e "\033[31mNo se han encontrado archivos en $DIR_FINAL_BKP\033[0m"
+else
+    # Si se encuentran archivos, los mostramos en rosa
+    echo -e "\033[35mArchivos encontrados:\033[0m"
+    for i in "${!backups[@]}"; do
+        echo -e "\033[35m[$i] ${backups[$i]}\033[0m"
+    done
+fi
+
 
 # Mensaje final de éxito
 echo -e "\033[32mCopia de seguridad completada exitosamente.\033[0m"
