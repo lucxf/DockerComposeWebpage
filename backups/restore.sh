@@ -63,7 +63,17 @@ if ! [[ "$select_backup" =~ ^[0-9]+$ ]]; then
     exit 1
 fi
 
-# Mostrar la opción seleccionada
-echo -e "\033[34mHas seleccionado la copia de seguridad número $select_backup para restaurar.\033[0m"
+# Suponiendo que ya tienes el array backups cargado, y una posición seleccionada
+# Por ejemplo, vamos a seleccionar la copia en la posición $select_backup (que es un número que el usuario ingresa)
+
+# Validar que la posición esté dentro de los límites del array
+if [ "$select_backup" -ge 0 ] && [ "$select_backup" -lt "${#backups[@]}" ]; then
+    # Acceder al archivo en la posición $select_backup
+    archivo_seleccionado="${backups[$select_backup]}"
+    echo -e "\033[34mHas seleccionado la copia de seguridad número\033[0m \033[35m$select_backup\033[0m $archivo_seleccionado \033[34m para restaurar.\033[0m"
+else
+    echo -e "\033[31mError: La posición seleccionada está fuera de rango.\033[0m"
+    exit 1
+fi
 
 # Deszipeo los volumenes del backup
