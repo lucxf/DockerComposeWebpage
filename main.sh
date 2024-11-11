@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Definir las rutas
-ZIP_PATH='/home/lucxf/202411061643.tar.gz'
+ZIP_PATH='../202411111707.tar.gz'
 VOLUMES_PATH='/volums/wordpress-traefik-kuma'
 COMPOSE_PATH='./estructura/mycompose-wordpress-traefik-kuma-server.yml'
 
