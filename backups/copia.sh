@@ -7,7 +7,7 @@ DIR_FINAL_BKP="/test/backups"
 # Donde guardamos backups en local
 DIR_LOCAL_BKP="/etc/backups"
 # Directorio donde están los volúmenes
-DIR_ORIGIONAL="/volums/wordpress-traefik-kuma"
+DIR_ORIGINAL="/volums/wordpress-traefik-kuma"
 # Path del fichero docker-compose
 DCOMPOSE_PATH="../estructura/mycompose-wordpress-traefik-kuma-server.yml"
 # IP de la máquina de backups
@@ -42,7 +42,7 @@ fi
 # Creamos el archivo comprimido del backup
 echo -e "\033[34mCreando archivo comprimido del backup...\033[0m"
 date=$(date +"%Y%m%d%H%M")
-if ! tar -czpvf $DIR_LOCAL_BKP/$date.tar.gz -C $DIR_ORIGIONAL .; then
+if ! tar -czpvf $DIR_LOCAL_BKP/$date.tar.gz -C $DIR_ORIGINAL .; then
     log_error "Error al crear el archivo comprimido."
 fi
 

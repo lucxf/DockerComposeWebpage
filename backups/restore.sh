@@ -5,7 +5,7 @@ DIR_FINAL_BKP="/test/backups"
 # Donde guardamos backups en local
 DIR_LOCAL_BKP="/etc/backups"
 # Directorio de los volumenes originales
-DIR_ORIGIONAL="/volums/wordpress-traefik-kuma"
+DIR_ORIGINAL="/volums/wordpress-traefik-kuma"
 # Directorio temporal por si falla
 DIR_TEMP="/etc/temp_volumes"
 # Path del fichero docker-compose
@@ -33,9 +33,11 @@ if ! docker compose -f $DCOMPOSE_PATH down; then
     log_error "Error al detener los contenedores."
 fi
 
-# Movemos a una carpeta temporal los volumenes actuales por si falla el restore
-# mv $DIR_ORIGIONAL/* $DIR_TEMP
-
+# Directorio temporal donde moveremos los volúmenes actuales por si falla el restore
+echo -e "\033[34mMoviendo volúmenes actuales a la carpeta temporal...\033[0m"
+if ! mv $DIR_ORIGINAL/* $DIR_TEMP; then
+    log_error "Error al mover los volúmenes actuales de $DIR_ORIGINAL a $DIR_TEMP."
+fi
 # Listo Backups
 # Obtenemos los archivos del directorio ordenados alfabéticamente
 echo -e "\033[34mObteniendo archivos del directorio y ordenándolos...\033[0m"
@@ -76,4 +78,54 @@ else
     exit 1
 fi
 
-# Deszipeo los volumenes del backup
+# Deszipear los backups
+
+tar -xzpvf $DIR_FINAL_BKP/$archivo_seleccionado -C $DIR_ORIGINAL
+
+# Levanta contenedores
+docker compose -f $DCOMPOSE_PATH up -d
+
+# Pedimos confirmación al usuario
+echo -e "\033[32m¿Está todo correcto? (sí/no)\033[0m"
+read confirmacion
+
+# Validar la respuesta del usuario
+if [[ "$confirmacion" =~ ^[sS][iI]$ ]]; then
+    # Si la respuesta es sí, finalizar el script
+    echo -e "\033[34mRestauración completada correctamente. Finalizando...\033[0m"
+    echo -e "\033[34mEliminando archivos temporales en $DIR_TEMP...\033[0m"
+    if ! rm -r $DIR_TEMP/*; then
+        log_error "Error al eliminar los archivos de $DIR_TEMP."
+    fi
+    exit 0
+else
+    # Si la respuesta es no, restaurar el estado previo
+    echo -e "\033[32mRestaurando el estado previo al restore...\033[0m"
+    
+    # Aquí puedes agregar la restauración de los contenedores, volúmenes, etc.
+    # Por ejemplo, mover los volúmenes desde la carpeta temporal de vuelta al original:
+    # mv $DIR_TEMP/* $DIR_ORIGINAL
+
+    echo -e "\033[34mRestaurando contenedores...\033[0m"
+    if ! docker compose -f $DCOMPOSE_PATH down; then
+        log_error "Error al restaurar los contenedores."
+    fi
+
+    # Directorio temporal donde moveremos los volúmenes actuales por si falla el restore
+    echo -e "\033[34mMoviendo volúmenes actuales a la carpeta temporal...\033[0m"
+    if ! mv $DIR_TEMP/* $DIR_ORIGINAL; then
+        log_error "Error al mover los volúmenes actuales de $DIR_TEMP a $DIR_ORIGINAL."
+    fi
+
+    # Levantamos los contenedores nuevamente
+    echo -e "\033[34mRestaurando contenedores...\033[0m"
+    if ! docker compose -f $DCOMPOSE_PATH up -d; then
+        log_error "Error al restaurar los contenedores."
+    fi
+
+    # También podrías eliminar los backups temporales si es necesario
+    # rm -rf $DIR_TEMP/*
+
+    echo -e "\033[34mEstado restaurado correctamente.\033[0m"
+    exit 0
+fi
