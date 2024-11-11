@@ -110,6 +110,39 @@ services:
          - traefik.http.routers.uptime_kuma-secure.tls=true
          - traefik.http.routers.uptime_kuma-secure.tls.certresolver=letsencrypt
 
+   nextcloud_db: # default port 3306 for Nextcloud
+      container_name: nextcloud_db
+      image: mariadb
+      restart: always
+      volumes:
+         - /volums/wordpress-traefik-kuma/nextcloud_db:/var/lib/mysql
+      env_file:
+         - nextcloud.env
+      networks:
+         - internal
+
+   nextcloud: # default port 80 (changed to 700)
+      image: nextcloud
+      container_name: nextcloud
+      restart: always
+      volumes:
+         - /volums/wordpress-traefik-kuma/NextCloud:/var/www/html
+      depends_on:
+         - nextcloud_db
+      env_file:
+         - nextcloud.env
+      networks:
+         - xarxa_proxy
+         - internal
+      labels:
+         - traefik.enable=true
+         - traefik.http.services.nextcloud.loadbalancer.server.port=80
+         - traefik.http.routers.nextcloud-secure.entrypoints=websecure
+         - traefik.http.routers.nextcloud-secure.rule=Host(`nextcloud.prueba.local.loc`)
+         - traefik.http.routers.nextcloud-secure.tls=true
+         - traefik.http.routers.nextcloud-secure.tls.certresolver=letsencrypt
+
+
 networks:
    xarxa_proxy:
       name: xarxa_proxy
