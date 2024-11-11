@@ -1,4 +1,4 @@
-#!/bin/bash/
+#!/bin/bash
 
 # Donde guardamos los backups
 DIR_FINAL_BKP="/test/backups"
