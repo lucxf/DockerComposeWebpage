@@ -63,12 +63,6 @@ else
     echo -e "\033[33mNo se encontraron copias de seguridad en local .\033[0m"
 fi
 
-# Movemos el archivo comprimido al directorio final de backups
-echo -e "\033[34mMoviendo el backup a la ubicación final...\033[0m"
-if ! mv $DIR_LOCAL_BKP/$date.tar.gz $DIR_FINAL_BKP; then
-    log_error "Error al mover el archivo de backup."
-fi
-
 # Levantamos los contenedores de nuevo
 echo -e "\033[34mLevantando los contenedores...\033[0m"
 if ! docker compose -f $DCOMPOSE_PATH up -d; then
