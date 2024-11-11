@@ -28,11 +28,10 @@ if ! sudo apt install -y bind9 bind9utils bind9-doc; then
 fi
 
 # Verificamos que el servicio de BIND esté funcionando
-# echo "Comprobando el estado de BIND..."
-# if ! sudo systemctl status bind9; then
-#     log_error "BIND DNS no está corriendo correctamente después de la instalación."
-#     exit 1
-# fi
+echo "Comprobando el estado de BIND..."
+if ! sudo systemctl status bind9 > /dev/null; then
+    log_error "BIND DNS no está corriendo correctamente después de la instalación."
+fi
 
 # Configuración de la zona DNS
 
@@ -40,28 +39,22 @@ fi
 ZONE_FILE="/etc/bind/db.$DOMAIN"
 echo -e "\033[34mCreando el archivo de zona DNS para $DOMAIN...\033[0m"
 
-cat << EOF > /etc/bind/named.conf.local
-  zone "$DOMAIN" {
-    type master;
-    file "/etc/bind/db.$DOMAIN";
-};
-EOF
-
-if [ $? -ne 0 ]; then
-    log_error "Error al crear el archivo de zona en '/etc/bind/named.conf.local'."
+# Comprobamos si ya existe el archivo de zona
+if [ -f $ZONE_FILE ]; then
+    log_error "El archivo de zona '$ZONE_FILE' ya existe. Por favor, elimina el archivo o revisa permisos."
 fi
 
-cat <<EOF | sudo tee $ZONE_FILE > /dev/null
-\$TTL 38400  ; Temps (seg) de vida per defecte (TIME TO LIVE GLOBAL, TEMPS QUE ES GUARDEN EN CACHE ELS REGISTRES)
+cat << EOF | sudo tee $ZONE_FILE > /dev/null
+\$TTL 38400  ; Tiempo (seg) de vida por defecto (TTL)
 $DOMAIN. IN SOA ns1.$DOMAIN. $USER.$DOMAIN. (
-    2010120416 ; Serial
+    2023110701 ; Serial
     10800      ; Refresh
     3600       ; Retry
     604800     ; Expire
     38400      ; Minimum TTL
 )
 
-; DNS Servers
+; Servidores DNS
 $DOMAIN. IN NS ns1.$DOMAIN.
 $DOMAIN. IN A $IP
 ; Direcciones IP
@@ -78,26 +71,29 @@ fi
 
 # Configuración de BIND para que reconozca la nueva zona
 
-# Creamos el archivo de opciones de BIND: named.conf.options
+# Configuración en 'named.conf.local'
+echo -e "\033[34mConfigurando el archivo de zonas en named.conf.local...\033[0m"
+
+if ! sudo bash -c "cat <<EOF > /etc/bind/named.conf.local
+zone \"$DOMAIN\" {
+    type master;
+    file \"/etc/bind/db.$DOMAIN\";
+};
+EOF"; then
+    log_error "Error al configurar la zona en '/etc/bind/named.conf.local'."
+fi
+
+# Configuración de BIND (named.conf.options)
 echo -e "\033[34mConfigurando las opciones de BIND...\033[0m"
 cat <<EOF | sudo tee /etc/bind/named.conf.options > /dev/null
 options {
     directory "/var/cache/bind";
 
-    // Si hay un firewall entre tu servidor y los servidores de nombres que deseas utilizar,
-    // es posible que debas configurar el firewall para permitir múltiples puertos.
-    // Más detalles en: http://www.kb.cert.org/vuls/id/800113
-
-    // Si tu ISP te ha proporcionado uno o más servidores DNS estables,
-    // puedes usar estos servidores como forwarders.
     forwarders {
         1.1.1.1;
         8.8.8.8;
     };
 
-    // Si BIND muestra mensajes de error sobre la clave raíz expirando,
-    // necesitarás actualizar tus claves. Más detalles en:
-    // https://www.isc.org/bind-keys
     dnssec-validation auto;
     listen-on { any; };
     listen-on-v6 { any; };
@@ -115,7 +111,7 @@ if ! sudo systemctl reload bind9; then
     log_error "Error al recargar BIND después de añadir la zona."
 fi
 
-# Comprobamos si BIND está funcionando correctamente
+# Comprobamos si la zona está configurada correctamente
 echo -e "\033[34mVerificando la zona DNS...\033[0m"
 if ! sudo named-checkzone $DOMAIN /etc/bind/db.$DOMAIN; then
     log_error "Error al comprobar la zona DNS con 'named-checkzone'."
