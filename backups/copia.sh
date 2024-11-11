@@ -81,7 +81,22 @@ else
     # Si se encuentran archivos, los mostramos en rosa
     echo -e "\033[35mArchivos encontrados:\033[0m"
     for i in "${!backups[@]}"; do
-        echo -e "\033[35m[$i] ${backups[$i]}\033[0m"
+        echo -e "\033[35m[$i]\033[0m ${backups[$i]}"
+    done
+fi
+
+# Comprobamos si el número de archivos supera el máximo permitido
+if [ ${#backups[@]} -gt $MAX_BKPS ]; then
+    # Calculamos cuántos archivos eliminar
+    archivos_a_eliminar=$(( ${#backups[@]} - $MAX_BKPS ))
+
+    echo -e "\033[33mSe han encontrado más de $MAX_BKPS copias de seguridad. Eliminando los $archivos_a_eliminar archivos más antiguos...\033[0m"
+
+    # Eliminamos los archivos más antiguos
+    for ((i=0; i<archivos_a_eliminar; i++)); do
+        archivo_a_eliminar="${backups[$i]}"
+        echo -e "\033[31mEliminando archivo: $archivo_a_eliminar\033[0m"
+        rm -f "$DIR_FINAL_BKP/$archivo_a_eliminar"
     done
 fi
 
