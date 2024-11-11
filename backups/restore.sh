@@ -1,4 +1,5 @@
 #!/bin/bash/
+
 # Donde guardamos los backups
 DIR_FINAL_BKP="/test/backups"
 # Donde guardamos backups en local
@@ -33,7 +34,7 @@ if ! docker compose -f $DCOMPOSE_PATH down; then
 fi
 
 # Movemos a una carpeta temporal los volumenes actuales por si falla el restore
-mv $DIR_ORIGIONAL/* $DIR_TEMP
+# mv $DIR_ORIGIONAL/* $DIR_TEMP
 
 # Listo Backups
 # Obtenemos los archivos del directorio ordenados alfabéticamente
