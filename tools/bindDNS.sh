@@ -4,8 +4,8 @@
 LOGFILE="/var/log/Project/bind_installation.log"
 # Zona DNS
 DOMAIN="prueba.local.loc"
-IP=192.168.0.155
-
+IP="192.168.0.155"
+USER="lucxf"
 
 # Función para escribir errores en el log y mostrar el mensaje en rojo
 log_error() {
@@ -37,23 +37,23 @@ fi
 # Configuración de la zona DNS
 
 # Creamos el archivo de zona para '$DOMAIN'
-ZONE_FILE="/etc/bind/$DOMAIN"
+ZONE_FILE="/etc/bind/db.$DOMAIN"
 echo -e "\033[34mCreando el archivo de zona DNS para $DOMAIN...\033[0m"
 
 cat << EOF > /etc/bind/named.conf.local
   zone "$DOMAIN" {
     type master;
-    file "/etc/bind/$DOMAIN";
+    file "/etc/bind/db.$DOMAIN";
 };
 EOF
 
 if [ $? -ne 0 ]; then
-    log_error "Error al crear el archivo de zona '$ZONE_FILE'."
+    log_error "Error al crear el archivo de zona en '/etc/bind/named.conf.local'."
 fi
 
 cat <<EOF | sudo tee $ZONE_FILE > /dev/null
 \$TTL 38400  ; Temps (seg) de vida per defecte (TIME TO LIVE GLOBAL, TEMPS QUE ES GUARDEN EN CACHE ELS REGISTRES)
-$DOMAIN. IN SOA ns1.$DOMAIN. lucxf.$DOMAIN. (
+$DOMAIN. IN SOA ns1.$DOMAIN. $USER.$DOMAIN. (
     2010120416 ; Serial
     10800      ; Refresh
     3600       ; Retry
@@ -63,9 +63,8 @@ $DOMAIN. IN SOA ns1.$DOMAIN. lucxf.$DOMAIN. (
 
 ; DNS Servers
 $DOMAIN. IN NS ns1.$DOMAIN.
-
-; Direcciones IP
 $DOMAIN. IN A $IP
+; Direcciones IP
 ns1.$DOMAIN. IN A $IP
 www.$DOMAIN. IN A $IP
 kuma.$DOMAIN. IN A $IP
@@ -110,14 +109,6 @@ if [ $? -ne 0 ]; then
     log_error "Error al crear el archivo de opciones de BIND '/etc/bind/named.conf.options'."
 fi
 
-# # Añadimos la configuración de la zona en named.conf.local
-# echo -e "\033[34mConfigurando la zona en named.conf.local...\033[0m"
-# ZONE_CONF="/etc/bind/named.conf.local"
-
-# if ! sudo bash -c "echo 'zone \"$DOMAIN\" { type master; file \"/etc/bind/db.$DOMAIN\"; };' >> $ZONE_CONF"; then
-#     log_error "Error al añadir la configuración de la zona en '$ZONE_CONF'."
-# fi
-
 # Recargamos BIND para que cargue la nueva configuración
 echo -e "\033[34mRecargando BIND...\033[0m"
 if ! sudo systemctl reload bind9; then
@@ -126,7 +117,7 @@ fi
 
 # Comprobamos si BIND está funcionando correctamente
 echo -e "\033[34mVerificando la zona DNS...\033[0m"
-if ! sudo named-checkzone $DOMAIN /etc/bind/$DOMAIN; then
+if ! sudo named-checkzone $DOMAIN /etc/bind/db.$DOMAIN; then
     log_error "Error al comprobar la zona DNS con 'named-checkzone'."
 fi
 
