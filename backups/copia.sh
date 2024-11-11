@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # MAX copias en total
-MAX_NUM_BKPS=10
+MAX_NUM_BKPS=5
 # Donde guardamos los backups
 DIR_FINAL_BKP="/test/backups"
 # Donde guardamos backups en local
@@ -86,11 +86,11 @@ else
 fi
 
 # Comprobamos si el número de archivos supera el máximo permitido
-if [ ${#backups[@]} -gt $MAX_BKPS ]; then
+if [ ${#backups[@]} -gt $MAX_NUM_BKPS ]; then
     # Calculamos cuántos archivos eliminar
-    archivos_a_eliminar=$(( ${#backups[@]} - $MAX_BKPS ))
+    archivos_a_eliminar=$(( ${#backups[@]} - $MAX_NUM_BKPS ))
 
-    echo -e "\033[33mSe han encontrado más de $MAX_BKPS copias de seguridad. Eliminando los $archivos_a_eliminar archivos más antiguos...\033[0m"
+    echo -e "\033[33mSe han encontrado más de $MAX_NUM_BKPS copias de seguridad. Eliminando los $archivos_a_eliminar archivos más antiguos...\033[0m"
 
     # Eliminamos los archivos más antiguos
     for ((i=0; i<archivos_a_eliminar; i++)); do
