@@ -28,6 +28,8 @@ log_info() {
 
 mkdir -p /var/log/Project
 
+sudo ufw allow 22/tcp
+
 # Empezamos la instalación de Webmin
 log_info "Instalando Webmin..."
 chmod +x ./tools/webmin.sh
