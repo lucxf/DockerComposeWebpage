@@ -4,6 +4,8 @@
 # * Cómo crear una Tienda Online en WordPress y WooCommerce:
 #    https://www.youtube.com/watch?v=ZQTBAalJWCU
 
+DCOMPOSE_PATH='./estructura/mycompose-wordpress-traefik-kuma-server.yml'
+
 apt install apache2-utils
 htpasswd -nb admin .123456aA. > users.txt # creació del usuari administrador del panell web 'traefik'
 
@@ -45,7 +47,7 @@ echo -e "WORDPRESS_DB_NAME=$mysql_db" >>wp.env
 
 cp exemle.traefik.yml traefik.yml
 
-docker compose -f mycompose-wordpress-traefik-kuma-server.yml down
+docker compose -f $DCOMPOSE_PATH down
 #rm -r $file_traefik_data 2>&1 >/dev/null
 rm -r $dir_wp_db >/dev/null 2>&1
 rm -r $dir_wp_www >/dev/null 2>&1
@@ -57,15 +59,15 @@ mkdir -p $dir_volum
 touch $file_traefik_data
 chmod 600 $file_traefik_data
 
-docker compose -f mycompose-wordpress-traefik-kuma-server.yml build
-docker compose -f mycompose-wordpress-traefik-kuma-server.yml up -d
+docker compose -f $DCOMPOSE_PATH build
+docker compose -f $DCOMPOSE_PATH up -d
 
 sleep 2
-docker compose -f mycompose-wordpress-traefik-kuma-server.yml logs traefik
+docker compose -f $DCOMPOSE_PATH logs traefik
 sleep 2
-docker compose -f mycompose-wordpress-traefik-kuma-server.yml logs wp
+docker compose -f $DCOMPOSE_PATH logs wp
 sleep 2
-docker compose -f mycompose-wordpress-traefik-kuma-server.yml logs uptime_kuma
+docker compose -f $DCOMPOSE_PATH logs uptime_kuma
 
 
 lin1="define('WP_REDIS_HOST', 'wpredis');"
@@ -82,13 +84,13 @@ temp0=$(sed -r "/That.s all. stop editing. Happy publishing/ s/^/$info_def_redis
 echo -e "$temp0" >$dir_wp_www/wp-config.php
 
 sleep 3
-docker compose -f mycompose-wordpress-traefik-kuma-server.yml restart wpnginx
+docker compose -f $DCOMPOSE_PATH restart wpnginx
 sleep 3
-docker compose -f mycompose-wordpress-traefik-kuma-server.yml logs wpnginx
+docker compose -f $DCOMPOSE_PATH logs wpnginx
 sleep 3
-docker compose -f mycompose-wordpress-traefik-kuma-server.yml logs wpredis
+docker compose -f $DCOMPOSE_PATH logs wpredis
 sleep 5
-docker compose -f mycompose-wordpress-traefik-kuma-server.yml logs wpdb
+docker compose -f $DCOMPOSE_PATH logs wpdb
 
 
 
