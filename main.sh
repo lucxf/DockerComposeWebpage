@@ -25,6 +25,9 @@ log_info() {
     echo -e "\033[34m$(date) - INFO: $1\033[0m"
 }
 
+
+mkdir -p /var/log/Project
+
 # Empezamos la instalación de Webmin
 log_info "Instalando Webmin..."
 chmod +x ./tools/webmin.sh
@@ -57,3 +60,4 @@ log_info "Comprovando resoluciónbn de DNS..."
 if ! nslookup $DOMAIN; then
     log_error "La zona de DNS no resuleve correctamente"
 fi
+
