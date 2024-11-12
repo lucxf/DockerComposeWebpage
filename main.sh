@@ -53,26 +53,7 @@ if ! sudo ./estructura/config-wordpress-traefik-kuma-server.sh; then
     log_error "Error al crear la estructura de WordPress, Traefik y Kuma."
 fi
 
-# Sustituimos los volúmenes por los del backup
-log_info "Sustituyendo los volúmenes por los del backup..."
-docker compose -f $COMPOSE_PATH down
-if [ $? -ne 0 ]; then
-    log_error "Error al ejecutar 'docker compose down'."
+log_info "Comprovando resoluciónbn de DNS..."
+if ! nslookup $DOMAIN; then
+    log_error "La zona de DNS no resuleve correctamente"
 fi
-
-sudo rm -r $VOLUMES_PATH/*
-if [ $? -ne 0 ]; then
-    log_error "Error al borrar los volúmenes existentes."
-fi
-
-tar -xzpvf $ZIP_PATH -C $VOLUMES_PATH
-if [ $? -ne 0 ]; then
-    log_error "Error al descomprimir el archivo de backup."
-fi
-
-docker compose -f $COMPOSE_PATH up -d
-if [ $? -ne 0 ]; then
-    log_error "Error al ejecutar 'docker compose up'."
-fi
-
-log_info "Instalación y configuración completada con éxito."
