@@ -49,12 +49,6 @@ if ! sudo ./tools/docker.sh; then
     log_error "Error al instalar Docker y Docker Compose."
 fi
 
-# Creamos la estructura inicial
-log_info "Creando la estructura inicial de WordPress, Traefik y Kuma..."
-chmod +x ./estructura/config-wordpress-traefik-kuma-server.sh
-if ! sudo ./estructura/config-wordpress-traefik-kuma-server.sh; then
-    log_error "Error al crear la estructura de WordPress, Traefik y Kuma."
-fi
 
 log_info "Comprovando resoluciónbn de DNS..."
 if ! nslookup $DOMAIN; then
