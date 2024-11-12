@@ -17,6 +17,9 @@ log_error() {
     exit 1
 }
 
+# Crear el directorio de logs si no existe
+mkdir -p /var/log/Project
+
 # Comenzamos la instalación de BIND DNS
 echo -e "\033[34mInstalando BIND DNS...\033[0m"
 if ! sudo apt update -y && sudo apt upgrade -y; then
@@ -26,12 +29,6 @@ fi
 if ! sudo apt install -y bind9 bind9utils bind9-doc; then
     log_error "Error al instalar BIND DNS (bind9)."
 fi
-
-# # Verificamos que el servicio de BIND esté funcionando
-# echo "Comprobando el estado de BIND..."
-# if ! sudo systemctl status bind9 > /dev/null; then
-#     log_error "BIND DNS no está corriendo correctamente después de la instalación."
-# fi
 
 # Configuración de la zona DNS
 
@@ -75,7 +72,7 @@ fi
 echo -e "\033[34mConfigurando el archivo de zonas en named.conf.local...\033[0m"
 
 if ! sudo bash -c "cat <<EOF > /etc/bind/named.conf.local
-zone \"$DOMAIN\" {
+zone \"$DOMAIN.\" {
     type master;
     file \"/etc/bind/$DOMAIN\";
 };
@@ -103,6 +100,17 @@ EOF
 
 if [ $? -ne 0 ]; then
     log_error "Error al crear el archivo de opciones de BIND '/etc/bind/named.conf.options'."
+fi
+
+# Verificamos si el servicio BIND está corriendo, si no lo está, lo iniciamos
+echo -e "\033[34mVerificando si BIND está activo...\033[0m"
+if ! sudo systemctl is-active --quiet bind9; then
+    echo -e "\033[34mIniciando el servicio BIND...\033[0m"
+    if ! sudo systemctl start bind9; then
+        log_error "No se pudo iniciar BIND DNS."
+    fi
+else
+    echo -e "\033[32mBIND ya está activo.\033[0m"
 fi
 
 # Recargamos BIND para que cargue la nueva configuración
