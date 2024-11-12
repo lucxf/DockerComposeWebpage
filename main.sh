@@ -42,6 +42,8 @@ if ! sudo ./tools/bindDNS.sh; then
     log_error "Error al crear la zona de DNS."
 fi
 
+sudo ufw disable
+
 # Instalamos Docker y Docker Compose
 log_info "Instalando Docker y Docker Compose..."
 chmod +x ./tools/docker.sh
