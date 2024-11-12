@@ -27,16 +27,16 @@ if ! sudo apt install -y bind9 bind9utils bind9-doc; then
     log_error "Error al instalar BIND DNS (bind9)."
 fi
 
-# Verificamos que el servicio de BIND esté funcionando
-echo "Comprobando el estado de BIND..."
-if ! sudo systemctl status bind9 > /dev/null; then
-    log_error "BIND DNS no está corriendo correctamente después de la instalación."
-fi
+# # Verificamos que el servicio de BIND esté funcionando
+# echo "Comprobando el estado de BIND..."
+# if ! sudo systemctl status bind9 > /dev/null; then
+#     log_error "BIND DNS no está corriendo correctamente después de la instalación."
+# fi
 
 # Configuración de la zona DNS
 
 # Creamos el archivo de zona para '$DOMAIN'
-ZONE_FILE="/etc/bind/db.$DOMAIN"
+ZONE_FILE="/etc/bind/$DOMAIN"
 echo -e "\033[34mCreando el archivo de zona DNS para $DOMAIN...\033[0m"
 
 # Comprobamos si ya existe el archivo de zona
@@ -77,7 +77,7 @@ echo -e "\033[34mConfigurando el archivo de zonas en named.conf.local...\033[0m"
 if ! sudo bash -c "cat <<EOF > /etc/bind/named.conf.local
 zone \"$DOMAIN\" {
     type master;
-    file \"/etc/bind/db.$DOMAIN\";
+    file \"/etc/bind/$DOMAIN\";
 };
 EOF"; then
     log_error "Error al configurar la zona en '/etc/bind/named.conf.local'."
@@ -113,7 +113,7 @@ fi
 
 # Comprobamos si la zona está configurada correctamente
 echo -e "\033[34mVerificando la zona DNS...\033[0m"
-if ! sudo named-checkzone $DOMAIN /etc/bind/db.$DOMAIN; then
+if ! sudo named-checkzone $DOMAIN /etc/bind/$DOMAIN; then
     log_error "Error al comprobar la zona DNS con 'named-checkzone'."
 fi
 
