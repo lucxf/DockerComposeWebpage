@@ -3,7 +3,7 @@
 # Archivo de log
 LOGFILE="/var/log/Project/bind_installation.log"
 # Zona DNS
-DOMAIN="prueba.local.loc"
+DOMAIN="prueba.local.com"
 IP="192.168.0.155"
 USER="lucxf"
 

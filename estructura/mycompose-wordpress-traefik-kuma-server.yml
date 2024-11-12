@@ -138,7 +138,7 @@ services:
          - traefik.enable=true
          - traefik.http.services.nextcloud.loadbalancer.server.port=80
          - traefik.http.routers.nextcloud-secure.entrypoints=websecure
-         - traefik.http.routers.nextcloud-secure.rule=Host(`nextcloud.prueba.local.loc`)
+         - traefik.http.routers.nextcloud-secure.rule=Host(`nextcloud.prueba.local.com`)
          - traefik.http.routers.nextcloud-secure.tls=true
          - traefik.http.routers.nextcloud-secure.tls.certresolver=letsencrypt
 
