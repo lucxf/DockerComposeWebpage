@@ -4,7 +4,9 @@
 # * Cómo crear una Tienda Online en WordPress y WooCommerce:
 #    https://www.youtube.com/watch?v=ZQTBAalJWCU
 
-DCOMPOSE_PATH='./estructura/mycompose-wordpress-traefik-kuma-server.yml'
+cd ./estructura
+
+DCOMPOSE_PATH='./mycompose-wordpress-traefik-kuma-server.yml'
 
 apt install apache2-utils
 htpasswd -nb admin .123456aA. > users.txt # creació del usuari administrador del panell web 'traefik'
