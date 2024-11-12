@@ -53,9 +53,10 @@ if ! sudo ./tools/docker.sh; then
     log_error "Error al instalar Docker y Docker Compose."
 fi
 
-
-log_info "Comprovando resoluciónbn de DNS..."
-if ! nslookup $DOMAIN; then
-    log_error "La zona de DNS no resuleve correctamente"
+log_info "Iniciando proceso de creación..."
+chmod +x ./estructura/config-wordpress-traefik-kuma-server.sh
+if ! ./estructura/config-wordpress-traefik-kuma-server.sh; then
+    log_error "Error al iniciar el proceso de creación."
 fi
 
+echo -e "\033[32mEstructura creada correctamente\033[0m"
