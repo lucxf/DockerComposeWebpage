@@ -14,10 +14,10 @@ log_error() {
 }
 
 # Antes de instalar la herramienta, actualizamos los paquetes disponibles en los repositorios
-echo -e "\033[34mActualizando los paquetes disponibles en los repositorios...\033[0m"
-if ! sudo apt update -y && sudo apt upgrade -y; then
-    log_error "Error al ejecutar 'apt update' o 'apt upgrade'."
-fi
+# echo -e "\033[34mActualizando los paquetes disponibles en los repositorios...\033[0m"
+# if ! sudo apt update -y && sudo apt upgrade -y; then
+#     log_error "Error al ejecutar 'apt update' o 'apt upgrade'."
+# fi
 
 # Instalamos las dependencias necesarias
 echo -e "\033[34mInstalando dependencias necesarias...\033[0m"

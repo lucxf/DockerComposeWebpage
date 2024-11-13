@@ -31,11 +31,11 @@ if ! sudo apt-get autoremove -y; then
     log_error "Error al ejecutar 'apt-get autoremove'."
 fi
 
-# Actualizar el sistema
-echo -e "\033[34mActualizando el sistema...\033[0m"
-if ! sudo apt update -y && sudo apt upgrade -y; then
-    log_error "Error al ejecutar 'apt update' o 'apt upgrade'."
-fi
+# # Actualizar el sistema
+# echo -e "\033[34mActualizando el sistema...\033[0m"
+# if ! sudo apt update -y && sudo apt upgrade -y; then
+#     log_error "Error al ejecutar 'apt update' o 'apt upgrade'."
+# fi
 
 # Instalar certificados y herramienta de transferencia de datos
 echo -e "\033[34mInstalando certificados y herramientas de transferencia de datos...\033[0m"
