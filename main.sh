@@ -25,6 +25,11 @@ log_info() {
     echo -e "\033[34m$(date) - INFO: $1\033[0m"
 }
 
+# Comprobar si el usuario es root
+if [ "$(id -u)" -ne 0 ]; then
+    echo -e "\033[31mERROR: Este script debe ejecutarse como usuario root.\033[0m"
+    exit 1
+fi
 
 mkdir -p /var/log/Project
 
