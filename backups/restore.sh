@@ -9,7 +9,7 @@ DIR_ORIGINAL="/volums/wordpress-traefik-kuma"
 # Directorio temporal por si falla
 DIR_TEMP="/etc/temp_volumes"
 # Path del fichero docker-compose
-DCOMPOSE_PATH="../estructura/mycompose-wordpress-traefik-kuma-server.yml"
+DCOMPOSE_PATH="./estructura/mycompose-wordpress-traefik-kuma-server.yml"
 # IP de la máquina de backups
 IP=100.115.56.56
 # Archivo de log

@@ -9,7 +9,7 @@ DIR_LOCAL_BKP="/etc/backups"
 # Directorio donde están los volúmenes
 DIR_ORIGINAL="/volums/wordpress-traefik-kuma"
 # Path del fichero docker-compose
-DCOMPOSE_PATH="../estructura/mycompose-wordpress-traefik-kuma-server.yml"
+DCOMPOSE_PATH="./estructura/mycompose-wordpress-traefik-kuma-server.yml"
 # IP de la máquina de backups
 IP=100.115.56.56
 # Archivo de log
