@@ -123,7 +123,7 @@ else
         log_error "Error al eliminar los archivos de $DIR_ORIGINAL."
     fi
     # Directorio temporal donde moveremos los volúmenes actuales por si falla el restore
-    echo -e "\033[34mMoviendo volúmenes actuales a la carpeta temporal...\033[0m"
+    echo -e "\033[34mMoviendo volúmenes del directorio temporal a el original...\033[0m"
     if ! mv $DIR_TEMP/* $DIR_ORIGINAL; then
         log_error "Error al mover los volúmenes actuales de $DIR_TEMP a $DIR_ORIGINAL."
     fi
