@@ -27,6 +27,13 @@ log_error() {
 # Comenzamos el backup
 echo -e "\033[34mComenzando restauración...\033[0m"
 
+# Verificamos la conectividad con la máquina de backups
+echo -e "\033[34mComprobando conectividad con la máquina de backups...\033[0m"
+if ! ping -c 10 $IP; then
+    log_error "Error al conectar con la máquina de backups."
+fi
+
+
 # Borramos los contenedores
 echo -e "\033[34mDeteniendo contenedores...\033[0m"
 if ! docker compose -f $DCOMPOSE_PATH down; then
@@ -38,6 +45,7 @@ echo -e "\033[34mMoviendo volúmenes actuales a la carpeta temporal...\033[0m"
 if ! mv $DIR_ORIGINAL/* $DIR_TEMP; then
     log_error "Error al mover los volúmenes actuales de $DIR_ORIGINAL a $DIR_TEMP."
 fi
+
 # Listo Backups
 # Obtenemos los archivos del directorio ordenados alfabéticamente
 echo -e "\033[34mObteniendo archivos del directorio y ordenándolos...\033[0m"
@@ -65,9 +73,6 @@ if ! [[ "$select_backup" =~ ^[0-9]+$ ]]; then
     exit 1
 fi
 
-# Suponiendo que ya tienes el array backups cargado, y una posición seleccionada
-# Por ejemplo, vamos a seleccionar la copia en la posición $select_backup (que es un número que el usuario ingresa)
-
 # Validar que la posición esté dentro de los límites del array
 if [ "$select_backup" -ge 0 ] && [ "$select_backup" -lt "${#backups[@]}" ]; then
     # Acceder al archivo en la posición $select_backup
@@ -79,11 +84,16 @@ else
 fi
 
 # Deszipear los backups
-
-tar -xzpvf $DIR_FINAL_BKP/$archivo_seleccionado -C $DIR_ORIGINAL
+echo -e "\033[34mExtrayendo copia de seguridad...\033[0m"
+if ! tar -xzpvf $DIR_FINAL_BKP/$archivo_seleccionado -C $DIR_ORIGINAL; then
+    log_error "Error al extraer la copia de seguridad."
+fi
 
 # Levanta contenedores
-docker compose -f $DCOMPOSE_PATH up -d
+echo -e "\033[34mCreando contenedores...\033[0m"
+if ! docker compose -f $DCOMPOSE_PATH up -d; then
+    log_error "Error al crear los contenedores."
+fi
 
 # Pedimos confirmación al usuario
 echo -e "\033[32m¿Está todo correcto? (sí/no)\033[0m"
@@ -102,9 +112,7 @@ else
     # Si la respuesta es no, restaurar el estado previo
     echo -e "\033[32mRestaurando el estado previo al restore...\033[0m"
     
-    # Aquí puedes agregar la restauración de los contenedores, volúmenes, etc.
-    # Por ejemplo, mover los volúmenes desde la carpeta temporal de vuelta al original:
-    # mv $DIR_TEMP/* $DIR_ORIGINAL
+    # Suponiendo que ha fallado el restore, vuelve al estado inicial
 
     echo -e "\033[34mRestaurando contenedores...\033[0m"
     if ! docker compose -f $DCOMPOSE_PATH down; then
@@ -125,9 +133,6 @@ else
     if ! docker compose -f $DCOMPOSE_PATH up -d; then
         log_error "Error al restaurar los contenedores."
     fi
-
-    # También podrías eliminar los backups temporales si es necesario
-    # rm -rf $DIR_TEMP/*
 
     echo -e "\033[34mEstado restaurado correctamente.\033[0m"
     exit 0
