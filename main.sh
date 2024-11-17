@@ -75,3 +75,13 @@ if ! ./estructura/config-wordpress-traefik-kuma-server.sh; then
 fi
 
 echo -e "\033[32mEstructura creada correctamente\033[0m"
+
+# Creare el tunel VPN y luego hago un restore a partir de una copia
+
+log_info "Iniciando proceso de restauración..."
+chmod +x ./backups/restore.sh
+if ! ./backups/restore.sh; then
+    log_error "Error al iniciar el proceso de restauración."
+fi
+
+echo -e "\033[32mRestauración realizada correctamente\033[0m"
