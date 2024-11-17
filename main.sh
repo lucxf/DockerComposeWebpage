@@ -5,6 +5,12 @@ ZIP_PATH='../202411111707.tar.gz'
 VOLUMES_PATH='/volums/wordpress-traefik-kuma'
 COMPOSE_PATH='./estructura/mycompose-wordpress-traefik-kuma-server.yml'
 
+DIR_FINAL_BKP="/test/backups"
+# Donde guardamos backups en local
+DIR_LOCAL_BKP="/etc/backups"
+# Directorio temporal por si falla
+DIR_TEMP="/etc/temp_volumes"
+
 # Definir archivo de log
 LOGFILE="/var/log/Project/installation.log"
 
@@ -31,7 +37,11 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 fi
 
+# Creamos los directorios necesarios
 mkdir -p /var/log/Project
+mkdir -p $DIR_FINAL_BKP
+mkdir -p $DIR_LOCAL_BKP
+mkdir -p $DIR_TEMP
 
 sudo ufw allow 22/tcp
 
