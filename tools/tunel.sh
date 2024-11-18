@@ -42,7 +42,7 @@ fi
 # Iniciar Tailscale
 echo -e "\033[34mIniciando Tailscale...\033[0m"
 
-echo -e "\033[31mConfigura Manulamente Tailscale porfabor...\033[0m"
+echo -e "\033[32mConfigura Manulamente Tailscale porfabor...\033[0m"
 if ! sudo tailscale up; then
     log_error "Error al iniciar Tailscale."
 fi
@@ -70,13 +70,6 @@ fi
 echo -e "\033[34mInstalando sshfs...\033[0m"
 if ! sudo apt install sshfs -y; then
     log_error "Error al instalar sshfs."
-fi
-
-# Validación de la respuesta del usuario para continuar
-echo -e "\033[32m¿Se instaló sshfs correctamente? (si/no)\033[0m"
-read confirmacion
-if [[ ! "$confirmacion" =~ ^[sS][iI]$ ]]; then
-    log_error "No se pudo instalar sshfs."
 fi
 
 # Configurar sshfs
