@@ -2,6 +2,11 @@
 
 # Archivo de log
 LOGFILE="/var/log/tailscale_script.log"
+# Directorio de backups
+DIR_FINAL_BKP="/mnt/nas"
+IP_BKP="100.115.56.56"
+BKP_MCHN_USER="g4"
+MACHINE_BKP_DIR="/sda"
 
 # Función para escribir errores en el log y mostrar el mensaje en rojo
 log_error() {
@@ -23,12 +28,6 @@ if ! curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/noble.tailscale-keyring
     log_error "Error al agregar el archivo de lista de repositorio de Tailscale."
 fi
 
-# Validación de la respuesta del usuario para continuar
-echo -e "\033[32m¿Está todo correcto después de agregar los repositorios de Tailscale? (si/no)\033[0m"
-read confirmacion
-if [[ ! "$confirmacion" =~ ^[sS][iI]$ ]]; then
-    log_error "El repositorio de Tailscale no se agregó correctamente."
-fi
 
 # Instalar Tailscale
 echo -e "\033[34mInstalando Tailscale...\033[0m"
@@ -40,21 +39,16 @@ if ! sudo apt-get install tailscale -y; then
     log_error "Error al instalar Tailscale."
 fi
 
-# Validación de la respuesta del usuario para continuar
-echo -e "\033[32m¿Está todo correcto después de instalar Tailscale? (si/no)\033[0m"
-read confirmacion
-if [[ ! "$confirmacion" =~ ^[sS][iI]$ ]]; then
-    log_error "La instalación de Tailscale no se completó correctamente."
-fi
-
 # Iniciar Tailscale
 echo -e "\033[34mIniciando Tailscale...\033[0m"
+
+echo -e "\033[31mConfigura Manulamente Tailscale porfabor...\033[0m"
 if ! sudo tailscale up; then
     log_error "Error al iniciar Tailscale."
 fi
 
 # Validación de la respuesta del usuario para continuar
-echo -e "\033[32m¿Está Tailscale funcionando correctamente? (si/no)\033[0m"
+echo -e "\033[32m¿Has configurado manualmente Tailscale? (si/no)\033[0m"
 read confirmacion
 if [[ ! "$confirmacion" =~ ^[sS][iI]$ ]]; then
     log_error "Tailscale no se inició correctamente."
@@ -66,24 +60,10 @@ if ! tailscale ip -4; then
     log_error "Error al obtener la IP de Tailscale."
 fi
 
-# Validación de la respuesta del usuario para continuar
-echo -e "\033[32m¿La IP de Tailscale se obtuvo correctamente? (si/no)\033[0m"
-read confirmacion
-if [[ ! "$confirmacion" =~ ^[sS][iI]$ ]]; then
-    log_error "No se pudo obtener la IP de Tailscale."
-fi
-
 # Crear directorio para montar el NAS
 echo -e "\033[34mCreando directorio...\033[0m"
-if ! mkdir -p /mnt/nas; then
-    log_error "Error al crear el directorio '/mnt/nas'."
-fi
-
-# Validación de la respuesta del usuario para continuar
-echo -e "\033[32m¿El directorio /mnt/nas fue creado correctamente? (si/no)\033[0m"
-read confirmacion
-if [[ ! "$confirmacion" =~ ^[sS][iI]$ ]]; then
-    log_error "No se pudo crear el directorio '/mnt/nas'."
+if ! mkdir -p $DIR_FINAL_BKP; then
+    log_error "Error al crear el directorio '$DIR_FINAL_BKP'."
 fi
 
 # Instalar sshfs
@@ -101,20 +81,13 @@ fi
 
 # Configurar sshfs
 echo -e "\033[34mConfigurando sshfs...\033[0m"
-if ! sudo sshfs g4@100.115.56.56:/sda /mnt/nas; then
+if ! sudo sshfs $BKP_MCHN_USER@$IP_BKP:$MACHINE_BKP_DIR $DIR_FINAL_BKP; then
     log_error "Error al montar el directorio remoto con sshfs."
-fi
-
-# Validación de la respuesta del usuario para continuar
-echo -e "\033[32m¿El directorio se montó correctamente? (si/no)\033[0m"
-read confirmacion
-if [[ ! "$confirmacion" =~ ^[sS][iI]$ ]]; then
-    log_error "No se pudo montar el directorio con sshfs."
 fi
 
 # Comprobar la configuración
 echo -e "\033[34mComprobando configuración...\033[0m"
-if ! df -h; then
+if ! ls -l $DIR_FINAL_BKP; then
     log_error "Error al comprobar los sistemas de archivos."
 fi
 
@@ -125,4 +98,4 @@ if [[ ! "$confirmacion" =~ ^[sS][iI]$ ]]; then
     log_error "El directorio mapeado no aparece correctamente."
 fi
 
-echo -e "\033[32m¡Todo ha funcionado correctamente!\033[0m"
+echo -e "\033[32m¡Tunel establecido correctamente!\033[0m"
