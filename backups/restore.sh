@@ -33,7 +33,6 @@ if ! ping -c 10 $IP; then
     log_error "Error al conectar con la máquina de backups."
 fi
 
-
 # Borramos los contenedores
 echo -e "\033[34mDeteniendo contenedores...\033[0m"
 if ! docker compose -f $DCOMPOSE_PATH down; then
