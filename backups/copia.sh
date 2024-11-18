@@ -60,7 +60,7 @@ fi
 # Comprobamos si hay archivos en el directorio de origen
 echo -e "\033[34mComprobando si hay copias de seguridad en local...\033[0m"
 if [ "$(ls -A $DIR_LOCAL_BKP)" ]; then
-    echo -e "\033[34mArchivos encontrados, moviendo a /test/backups...\033[0m"
+    echo -e "\033[34mArchivos encontrados, moviendo a $DIR_FINAL_BKP...\033[0m"
     if ! mv $DIR_LOCAL_BKP/* $DIR_FINAL_BKP; then
         log_error "Error al mover los archivos del directorio de origen a $DIR_FINAL_BKP."
     fi

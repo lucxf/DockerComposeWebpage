@@ -78,6 +78,8 @@ echo -e "\033[32mEstructura creada correctamente\033[0m"
 
 # Creare el tunel VPN y luego hago un restore a partir de una copia
 
+
+
 log_info "Iniciando proceso de restauración..."
 chmod +x ./backups/restore.sh
 if ! ./backups/restore.sh; then
