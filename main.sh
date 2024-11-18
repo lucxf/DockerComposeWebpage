@@ -80,7 +80,7 @@ echo -e "\033[32mEstructura creada correctamente\033[0m"
 
 log_info "Creando conexion sshfs..."
 chmod +x ./tools/tunel.sh
-if ! ./todos.sh; then
+if ! ./tools/tunel.sh; then
     log_error "Error al crear conexión con sshfs"
 fi
 
