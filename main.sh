@@ -5,7 +5,7 @@ ZIP_PATH='../202411111707.tar.gz'
 VOLUMES_PATH='/volums/wordpress-traefik-kuma'
 COMPOSE_PATH='./estructura/mycompose-wordpress-traefik-kuma-server.yml'
 
-DIR_FINAL_BKP="/test/backups"
+DIR_FINAL_BKP="/mnt/nas/backups"
 # Donde guardamos backups en local
 DIR_LOCAL_BKP="/etc/backups"
 # Directorio temporal por si falla
@@ -78,7 +78,11 @@ echo -e "\033[32mEstructura creada correctamente\033[0m"
 
 # Creare el tunel VPN y luego hago un restore a partir de una copia
 
-
+log_info "Creando conexion sshfs..."
+chmod +x ./tools/tunel.sh
+if ! ./todos.sh; then
+    log_error "Error al crear conexión con sshfs"
+fi
 
 log_info "Iniciando proceso de restauración..."
 chmod +x ./backups/restore.sh
