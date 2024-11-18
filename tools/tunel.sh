@@ -17,3 +17,15 @@ read config_done
 echo -e "\033[34mObteniendo IP...\033[0m"
 tailscale ip -4
 
+echo -e "\033[34mCreando directorio...\033[0m"
+mkdir -p /mnt/nas
+
+echo -e "\033[34mInstalando sshfs...\033[0m"
+apt install sshfs -y
+echo -e "\033[34mConfigurando sshfs...\033[0m"
+sudo sshfs g4@100.115.56.56:/sda /mnt/nas
+
+echo -e "\033[34mComprovando configuración...\033[0m"
+df -h
+echo -e "\033[32mAparece la carpeta mapeada correctamente? (si/no)\033[0m"
+read sshfs_confirm
