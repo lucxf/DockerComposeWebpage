@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Archivo de log
-LOGFILE="/var/log/tailscale_script.log"
+LOGFILE="/var/log/Project/tailscale_script.log"
 # Directorio de backups
 DIR_FINAL_BKP="/mnt/nas"
 IP_BKP="100.115.56.56"
