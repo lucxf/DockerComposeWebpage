@@ -102,6 +102,7 @@ services:
          - xarxa_proxy
       volumes:
          - ${DIR_KUMA_INFO}:/app/data
+         - /var/run/docker.sock:/var/run/docker.sock:ro
       labels:
          - traefik.enable=true
          - traefik.http.services.uptime_kuma.loadbalancer.server.port=3001
