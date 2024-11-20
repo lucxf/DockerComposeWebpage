@@ -13,7 +13,7 @@ DCOMPOSE_PATH="./estructura/mycompose-wordpress-traefik-kuma-server.yml"
 # IP de la máquina de backups
 IP=100.115.56.56
 # Archivo de log
-LOGFILE="/var/log/backup.log"
+LOGFILE="/var/log/Project/backup.log"
 
 log_error() {
     # Registrar el error en el archivo de log
