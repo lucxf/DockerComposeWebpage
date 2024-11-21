@@ -42,7 +42,7 @@ fi
 # Iniciar Tailscale
 echo -e "\033[34mIniciando Tailscale...\033[0m"
 
-echo -e "\033[32mConfigura Manulamente Tailscale porfabor...\033[0m"
+echo -e "\033[32mConfigura Manulamente Tailscale porfavor...\033[0m"
 if ! sudo tailscale up; then
     log_error "Error al iniciar Tailscale."
 fi
