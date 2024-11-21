@@ -20,13 +20,11 @@ log_error() {
     echo "$(date) - ERROR: $1" | tee -a $LOGFILE
     # Mostrar el error en la terminal en rojo
     echo -e "\033[31m$(date) - ERROR: $1\033[0m"
-    # Detener la ejecución del script
-    exit 1
-
     # Levantamos los contenedores de nuevo
     echo -e "\033[34mLevantando los contenedores...\033[0m"
     docker compose -f $DCOMPOSE_PATH up -d
-
+    # Detener la ejecución del script
+    exit 1
 }
 
 # Comenzamos el backup
