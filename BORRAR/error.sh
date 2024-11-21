@@ -5,7 +5,7 @@ DOMAIN_PATH="/etc/bind/prueba.local.loc"
 
 rm -r $DOMAIN_PATH
 
-chmod +x ./borrar_docker.sh
-sudo ./borrar_docker.sh
-chmod +x ./borrar_webmin.sh
-sudo ./borrar_webmin.sh
+chmod +x ./BORRAR/borrar_docker.sh
+sudo ./BORRAR/borrar_docker.sh
+chmod +x ./BORRAR/borrar_webmin.sh
+sudo ./BORRAR/borrar_webmin.sh
