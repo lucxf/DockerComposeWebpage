@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Definir las rutas
-ZIP_PATH='../202411111707.tar.gz'
 VOLUMES_PATH='/volums/wordpress-traefik-kuma'
 COMPOSE_PATH='./estructura/mycompose-wordpress-traefik-kuma-server.yml'
 
@@ -21,6 +20,12 @@ log_error() {
     # Mostrar el error en la terminal en rojo
     echo -e "\033[31m$(date) - ERROR: $1\033[0m"
     # Detener la ejecución del script
+
+        # Empezamos la instalación de Webmin
+    log_info "Borrando todo lo instalado..."
+    chmod +x ./BORRAR/error.sh
+    sudo ./BORRAR/error.sh
+
     exit 1
 }
 
