@@ -24,6 +24,12 @@ log_error() {
     exit 1
 }
 
+# Comprobar si el usuario es root
+if [ "$(id -u)" -ne 0 ]; then
+    echo -e "\033[31mERROR: Este script debe ejecutarse como usuario root.\033[0m"
+    exit 1
+fi
+
 # Comenzamos el backup
 echo -e "\033[34mComenzando restauración...\033[0m"
 
