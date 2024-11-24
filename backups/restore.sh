@@ -85,14 +85,14 @@ fi
 # Suponiendo que "backups" es un array previamente definido
 
 # Solicitar la selección de copia de seguridad
-echo "Por favor, selecciona una copia de seguridad (0 - ${#backups[@]}-1):"
+echo "Por favor, selecciona una copia de seguridad (0 - (${#backups[@]}-1)):"
 read -r select_backup
 
 # Bucle hasta que se seleccione una copia de seguridad válida
 until [ "$select_backup" -ge 0 ] && [ "$select_backup" -lt "${#backups[@]}" ]; do
     # Si la entrada no es válida, mostrar error y pedir de nuevo
     echo "Error: La posición seleccionada está fuera de rango. Por favor, selecciona un número válido."
-    echo "Por favor, selecciona una copia de seguridad (0 - ${#backups[@]}-1):"
+    echo "Por favor, selecciona una copia de seguridad (0 - (${#backups[@]}-1)):"
     read -r select_backup
 done
 
