@@ -72,15 +72,33 @@ if ! [[ "$select_backup" =~ ^[0-9]+$ ]]; then
     exit 1
 fi
 
-# Validar que la posición esté dentro de los límites del array
-if [ "$select_backup" -ge 0 ] && [ "$select_backup" -lt "${#backups[@]}" ]; then
-    # Acceder al archivo en la posición $select_backup
-    archivo_seleccionado="${backups[$select_backup]}"
-    echo -e "\033[34mHas seleccionado la copia de seguridad número\033[0m \033[35m$select_backup\033[0m $archivo_seleccionado \033[34m para restaurar.\033[0m"
-else
-    echo -e "\033[31mError: La posición seleccionada está fuera de rango.\033[0m"
-    exit 1
-fi
+# # Validar que la posición esté dentro de los límites del array
+# if [ "$select_backup" -ge 0 ] && [ "$select_backup" -lt "${#backups[@]}" ]; then
+#     # Acceder al archivo en la posición $select_backup
+#     archivo_seleccionado="${backups[$select_backup]}"
+#     echo -e "\033[34mHas seleccionado la copia de seguridad número\033[0m \033[35m$select_backup\033[0m $archivo_seleccionado \033[34m para restaurar.\033[0m"
+# else
+#     echo -e "\033[31mError: La posición seleccionada está fuera de rango.\033[0m"
+#     exit 1
+# fi
+
+# Suponiendo que "backups" es un array previamente definido
+
+# Solicitar la selección de copia de seguridad
+echo "Por favor, selecciona una copia de seguridad (0 - ${#backups[@]}-1):"
+read -r select_backup
+
+# Bucle hasta que se seleccione una copia de seguridad válida
+until [ "$select_backup" -ge 0 ] && [ "$select_backup" -lt "${#backups[@]}" ]; do
+    # Si la entrada no es válida, mostrar error y pedir de nuevo
+    echo "Error: La posición seleccionada está fuera de rango. Por favor, selecciona un número válido."
+    echo "Por favor, selecciona una copia de seguridad (0 - ${#backups[@]}-1):"
+    read -r select_backup
+done
+
+# Cuando la entrada es válida, se selecciona el archivo
+archivo_seleccionado="${backups[$select_backup]}"
+echo -e "\033[34mHas seleccionado la copia de seguridad número\033[0m \033[35m$select_backup\033[0m $archivo_seleccionado \033[34m para restaurar.\033[0m"
 
 # Deszipear los backups
 echo -e "\033[34mExtrayendo copia de seguridad...\033[0m"
