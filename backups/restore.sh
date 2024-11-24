@@ -82,7 +82,6 @@ fi
 #     exit 1
 # fi
 
-# Suponiendo que "backups" es un array previamente definido
 
 # Solicitar la selección de copia de seguridad
 echo "Por favor, selecciona una copia de seguridad (0 - (${#backups[@]}-1)):"
