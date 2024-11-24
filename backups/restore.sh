@@ -82,7 +82,7 @@ fi
 #     exit 1
 # fi
 
-total_backups=$(${#backups[@]} - 1)
+total_backups=${#backups[@]} - 1
  
 # Solicitar la selección de copia de seguridad
 echo "Por favor, selecciona una copia de seguridad (0 - $total_backups):"
