@@ -89,7 +89,7 @@ echo "Por favor, selecciona una copia de seguridad (0 - $total_backups):"
 read -r select_backup
 
 # Bucle hasta que se seleccione una copia de seguridad válida
-until [ "$select_backup" -ge 0 ] && [ "$select_backup" -lt "$total_backups" ]; do
+until [ "$select_backup" -ge 0 ] && [ "$select_backup" -lt "${#backups[@]}" ]; do
     # Si la entrada no es válida, mostrar error y pedir de nuevo
     echo "Error: La posición seleccionada está fuera de rango. Por favor, selecciona un número válido."
     echo "Por favor, selecciona una copia de seguridad (0 - $total_backups):"
