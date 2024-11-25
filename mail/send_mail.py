@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import os
 from dotenv import load_dotenv
 from email.message import EmailMessage
@@ -6,15 +7,15 @@ import smtplib
 
 load_dotenv()
 
-mail = os.getenv("MAIL")
-password = os.getenv("PASSWORD")
+mail = os.getenv("PASSWORD_MAIL_KUMA")
+password = os.getenv("MAIL_KUMA")
 
 subject = "Asunto del email"
 body = """
   Contenido del correo...
 """
 
-em = EmailMessage{}
+em = EmailMessage()
 em["From"] = mail
 em["To"] = mail
 em["Subject"] = subject
