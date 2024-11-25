@@ -27,11 +27,11 @@ log_error() {
     echo -e "\033[34mLevantando los contenedores...\033[0m"
     docker compose -f "$DCOMPOSE_PATH" up -d
     
-    # Detener la ejecución del script
-    exit 1
-    
     # Enviar el correo de error
     send_mail "$error_message" "Failed"
+
+    # Detener la ejecución del script
+    exit 1
 }
 
 send_mail() {
