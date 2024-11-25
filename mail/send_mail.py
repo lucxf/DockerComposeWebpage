@@ -7,8 +7,8 @@ import smtplib
 
 load_dotenv()
 
-mail = os.getenv("PASSWORD_MAIL_KUMA")
-password = os.getenv("MAIL_KUMA")
+password = os.getenv("PASSWORD_MAIL_KUMA")
+mail = os.getenv("MAIL_KUMA")
 
 subject = "Asunto del email"
 body = """
