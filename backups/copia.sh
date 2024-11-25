@@ -17,41 +17,50 @@ LOGFILE="/var/log/Project/backup.log"
 
 log_error() {
     # Registrar el error en el archivo de log
-    echo "$(date) - ERROR: $1" | tee -a $LOGFILE
-    error=$(echo "$(date) - ERROR: $1")
-    echo $error
+    error_message="$(date) - ERROR: $1"
+    echo "$error_message" | tee -a "$LOGFILE"
+    
     # Mostrar el error en la terminal en rojo
-    echo -e "\033[31m$(date) - ERROR: $1\033[0m"
+    echo -e "\033[31m$error_message\033[0m"
+    
     # Levantamos los contenedores de nuevo
     echo -e "\033[34mLevantando los contenedores...\033[0m"
-    docker compose -f $DCOMPOSE_PATH up -d
+    docker compose -f "$DCOMPOSE_PATH" up -d
+    
     # Detener la ejecución del script
     exit 1
-    send_mail($error, "Failed")
+    
+    # Enviar el correo de error
+    send_mail "$error_message" "Failed"
 }
 
-send_mail(mail_body, status) {
-    sudo apt install python3.12-venv
-
-    python3 -m venv myenv
+send_mail() {
+    # Instalar dependencias y crear un entorno virtual si es necesario (evitar hacerlo cada vez)
+    if [[ ! -d "myenv" ]]; then
+        python3 -m venv myenv
+    fi
 
     source myenv/bin/activate
 
-    pip install python-dotenv
+    if [[ ! $(pip show python-dotenv) ]]; then
+        pip install python-dotenv
+    fi
 
-    if status == "Failed" {
-        subject = "⚠️ Copia de seguridad fallida ⚠️"
-        body = "La copia de seguridad ha fallado. Detalles: $(date) -  $mail_body"
-    } else {
-        subject = "🟩 Copia de seguridad exitosa 🟩"
-        body = "La copia de seguridad ha sido realizada con exito. Detalles: $(date)"
-    }
+    if [[ $2 == "Failed" ]]; then
+        subject="⚠️ Copia de seguridad fallida ⚠️"
+        body="La copia de seguridad ha fallado. Detalles: $(date) - $1"
+    else
+        subject="🟩 Copia de seguridad exitosa 🟩"
+        body="La copia de seguridad ha sido realizada con exito. Detalles: $(date)"
+    fi
 
+    # Ejecutar script Python para enviar el correo
     python3 ../mail/pymail.py "$subject" "$body"
 
+    # Desactivar el entorno virtual
     deactivate
-
 }
+
 
 # Comenzamos el backup
 echo -e "\033[34mComenzando copiado de seguridad...\033[0m"
