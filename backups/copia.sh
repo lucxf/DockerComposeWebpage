@@ -18,6 +18,7 @@ LOGFILE="/var/log/Project/backup.log"
 log_error() {
     # Registrar el error en el archivo de log
     echo "$(date) - ERROR: $1" | tee -a $LOGFILE
+    error=$(echo "$(date) - ERROR: $1")
     # Mostrar el error en la terminal en rojo
     echo -e "\033[31m$(date) - ERROR: $1\033[0m"
     # Levantamos los contenedores de nuevo
@@ -25,7 +26,7 @@ log_error() {
     docker compose -f $DCOMPOSE_PATH up -d
     # Detener la ejecución del script
     exit 1
-    send_mail("ERROR: $1", "Failed")
+    send_mail(error, "Failed")
 }
 
 send_mail(mail_body, status) {
