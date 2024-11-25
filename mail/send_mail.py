@@ -4,16 +4,17 @@ from dotenv import load_dotenv
 from email.message import EmailMessage
 import ssl
 import smtplib
+import sys
 
 load_dotenv()
+
+print(sys.argv, flush=True)
 
 password = os.getenv("PASSWORD_MAIL_KUMA")
 mail = os.getenv("MAIL_KUMA")
 
 subject = "Asunto del email"
-body = """
-  Contenido del correo...
-"""
+body = sys.argv
 
 em = EmailMessage()
 em["From"] = mail

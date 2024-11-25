@@ -27,6 +27,21 @@ log_error() {
     exit 1
 }
 
+send_mail(mail_body) {
+    sudo apt install python3.12-venv
+
+    python3 -m venv myenv
+
+    source myenv/bin/activate
+
+    pip install python-dotenv
+
+    ../mail/pymail.sh
+
+    deactivate
+
+}
+
 # Comenzamos el backup
 echo -e "\033[34mComenzando copiado de seguridad...\033[0m"
 
