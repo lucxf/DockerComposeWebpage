@@ -25,9 +25,10 @@ log_error() {
     docker compose -f $DCOMPOSE_PATH up -d
     # Detener la ejecución del script
     exit 1
+    send_mail($1, "Failed")
 }
 
-send_mail(mail_body) {
+send_mail(mail_body, status) {
     sudo apt install python3.12-venv
 
     python3 -m venv myenv
@@ -36,7 +37,15 @@ send_mail(mail_body) {
 
     pip install python-dotenv
 
-    ../mail/pymail.sh
+    if status == "Failed" {
+        subject = "⚠️ Copia de seguridad fallida ⚠️"
+        body = "La copia de seguridad ha fallado. Detalles: $(date) -  $mail_body"
+    } else {
+        subject = "🟩 Copia de seguridad exitosa 🟩"
+        body = "La copia de seguridad ha sido realizada con exito. Detalles: $(date)"
+    }
+
+    python3 mail/pymail.py "$subject" "$body"
 
     deactivate
 
@@ -121,5 +130,7 @@ fi
 
 # Mensaje final de éxito
 echo -e "\033[32mCopia de seguridad completada exitosamente.\033[0m"
+
+send_mail($1, "Success")
 
 exit 0

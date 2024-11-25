@@ -8,13 +8,12 @@ import sys
 
 load_dotenv()
 
-print(sys.argv, flush=True)
-
 password = os.getenv("PASSWORD_MAIL_KUMA")
 mail = os.getenv("MAIL_KUMA")
 
-subject = "Asunto del email"
-body = sys.argv[1]
+# La posición 1 es el asunto y la 2 el cuerpo del correo
+subject = sys.argv[1]
+body = sys.argv[2]
 
 em = EmailMessage()
 em["From"] = mail
