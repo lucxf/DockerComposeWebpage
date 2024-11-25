@@ -6,6 +6,7 @@ LOGFILE="/var/log/Project/bind_installation.log"
 DOMAIN="prueba.local.loc"
 IP="192.168.0.155"
 USER="lucxf"
+ZONE_FILE="/etc/bind/$DOMAIN"
 
 # Función para escribir errores en el log y mostrar el mensaje en rojo
 log_error() {
@@ -33,7 +34,6 @@ fi
 # Configuración de la zona DNS
 
 # Creamos el archivo de zona para '$DOMAIN'
-ZONE_FILE="/etc/bind/$DOMAIN"
 echo -e "\033[34mCreando el archivo de zona DNS para $DOMAIN...\033[0m"
 
 # Comprobamos si ya existe el archivo de zona
