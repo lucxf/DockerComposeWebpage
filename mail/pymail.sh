@@ -6,7 +6,7 @@ source myenv/bin/activate
 
 pip install python-dotenv
 
-python3 send_mail.py mensaje haver si funciona
+python3 send_mail.py "mensaje haver si funciona"
 
 deactivate
 
