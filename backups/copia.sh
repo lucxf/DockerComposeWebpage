@@ -19,6 +19,7 @@ log_error() {
     # Registrar el error en el archivo de log
     echo "$(date) - ERROR: $1" | tee -a $LOGFILE
     error=$(echo "$(date) - ERROR: $1")
+    echo $error
     # Mostrar el error en la terminal en rojo
     echo -e "\033[31m$(date) - ERROR: $1\033[0m"
     # Levantamos los contenedores de nuevo
