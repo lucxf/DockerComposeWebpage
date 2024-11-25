@@ -45,7 +45,7 @@ send_mail(mail_body, status) {
         body = "La copia de seguridad ha sido realizada con exito. Detalles: $(date)"
     }
 
-    python3 mail/pymail.py "$subject" "$body"
+    python3 ../mail/pymail.py "$subject" "$body"
 
     deactivate
 
