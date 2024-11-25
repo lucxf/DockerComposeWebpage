@@ -14,7 +14,7 @@ password = os.getenv("PASSWORD_MAIL_KUMA")
 mail = os.getenv("MAIL_KUMA")
 
 subject = "Asunto del email"
-body = sys.argv
+body = sys.argv[1]
 
 em = EmailMessage()
 em["From"] = mail
