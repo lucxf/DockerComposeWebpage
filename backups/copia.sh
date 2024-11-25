@@ -26,7 +26,7 @@ log_error() {
     docker compose -f $DCOMPOSE_PATH up -d
     # Detener la ejecución del script
     exit 1
-    send_mail(error, "Failed")
+    send_mail($error, "Failed")
 }
 
 send_mail(mail_body, status) {
