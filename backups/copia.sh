@@ -36,7 +36,7 @@ log_error() {
     exit 1
 }
 
-send_mail(error_message, status) {
+send_mail() {
     # Instalar dependencias y crear un entorno virtual si es necesario (evitar hacerlo cada vez)
     if [[ ! -d "myenv" ]]; then
         python3 -m venv myenv
