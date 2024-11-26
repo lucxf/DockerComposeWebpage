@@ -15,6 +15,8 @@ IP=100.115.56.56
 # Archivo de log
 LOGFILE="/var/log/Project/backup.log"
 
+MAIL_PATH="./mail/pymail.sh"
+
 log_error() {
     # Registrar el error en el archivo de log
     # error_message="$(date) - ERROR: $1"
@@ -48,16 +50,16 @@ send_mail() {
         pip install python-dotenv
     fi
 
-    if [[ $2 == "Failed" ]]; then
+    if [[ $1 == "Failed" ]]; then
         subject="⚠️ Copia de seguridad fallida ⚠️"
-        body="La copia de seguridad ha fallado. Detalles: $error_message"
+        body="La copia de seguridad ha fallado. Detalles: $2"
     else
         subject="🟩 Copia de seguridad exitosa 🟩"
         body="La copia de seguridad ha sido realizada con exito. Detalles: $(date)"
     fi
 
     # Ejecutar script Python para enviar el correo
-    python3 ./mail/pymail.py "$subject" "$body"
+    python3 $MAIL_PATH"$subject" "$body"
 
     # Desactivar el entorno virtual
     deactivate
