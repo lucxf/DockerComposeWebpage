@@ -144,6 +144,6 @@ fi
 # Mensaje final de éxito
 echo -e "\033[32mCopia de seguridad completada exitosamente.\033[0m"
 
-send_mail($1, "Success")
+send_mail("Success")
 
 exit 0
