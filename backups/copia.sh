@@ -57,7 +57,7 @@ send_mail() {
     fi
 
     # Ejecutar script Python para enviar el correo
-    python3 ../mail/pymail.py "$subject" "$body"
+    python3 ./mail/pymail.py "$subject" "$body"
 
     # Desactivar el entorno virtual
     deactivate
