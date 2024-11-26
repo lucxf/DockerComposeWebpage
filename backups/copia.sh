@@ -52,7 +52,7 @@ send_mail() {
     fi
 
     if [[ $1 == "Failed" ]]; then
-        subject="⚠️ Copia de seguridad fallida ⚠️"
+        subject="⚠️🟥 Copia de seguridad fallida 🟥⚠️"
         body="La copia de seguridad ha fallado. Detalles: $2"
     else
         subject="🟩 Copia de seguridad exitosa 🟩"
