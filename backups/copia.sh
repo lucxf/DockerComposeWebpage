@@ -15,7 +15,7 @@ IP=100.115.56.56
 # Archivo de log
 LOGFILE="/var/log/Project/backup.log"
 
-MAIL_PATH="./mail/pymail.sh"
+MAIL_PATH="./mail/send_mail.py"
 
 log_error() {
     # Registrar el error en el archivo de log
@@ -59,7 +59,7 @@ send_mail() {
     fi
 
     # Ejecutar script Python para enviar el correo
-    python3 $MAIL_PATH"$subject" "$body"
+    python3 $MAIL_PATH "$subject" "$body"
 
     # Desactivar el entorno virtual
     deactivate
