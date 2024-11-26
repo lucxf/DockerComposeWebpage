@@ -30,7 +30,7 @@ log_error() {
     docker compose -f "$DCOMPOSE_PATH" up -d
     
     # Enviar el correo de error
-    send_mail "$error_message" "Failed"
+    send_mail "Failed" "$error_message"
 
     # Detener la ejecución del script
     exit 1
@@ -144,6 +144,6 @@ fi
 # Mensaje final de éxito
 echo -e "\033[32mCopia de seguridad completada exitosamente.\033[0m"
 
-send_mail("Success")
+    send_mail "Success" 
 
 exit 0
