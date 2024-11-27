@@ -40,6 +40,7 @@ log_error() {
 
 send_mail() {
     echo "enviando correo..."
+     apt install python3-xyz -y
     # Instalar dependencias y crear un entorno virtual si es necesario (evitar hacerlo cada vez)
     if [[ ! -d "myenv" ]]; then
         python3 -m venv myenv
