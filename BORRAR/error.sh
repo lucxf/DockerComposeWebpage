@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DIR_TEMP="/etc/temp_volumes"
-DOMAIN_PATH="/etc/bind/prueba.local.loc"
+DOMAIN_PATH="/etc/bind/millionx.sdslab.cat"
 
 rm -r $DOMAIN_PATH
 

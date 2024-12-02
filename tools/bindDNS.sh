@@ -4,7 +4,7 @@
 LOGFILE="/var/log/Project/bind_installation.log"
 # Zona DNS
 DOMAIN="millionx.sdslab.cat"
-IP="192.168.0.155"
+IP="51.83.58.3"
 USER="lucxf"
 ZONE_FILE="/etc/bind/$DOMAIN"
 
