@@ -58,7 +58,7 @@ $DOMAIN. IN A $IP
 ns1.$DOMAIN. IN A $IP
 www.$DOMAIN. IN A $IP
 kuma.$DOMAIN. IN A $IP
-traefic.$DOMAIN. IN A $IP
+traefik.$DOMAIN. IN A $IP
 nextcloud.$DOMAIN. IN A $IP
 EOF
 
