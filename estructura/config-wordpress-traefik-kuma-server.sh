@@ -11,9 +11,9 @@ DCOMPOSE_PATH='./mycompose-wordpress-traefik-kuma-server.yml'
 apt install apache2-utils
 htpasswd -nb admin .123456aA. > users.txt # creació del usuari administrador del panell web 'traefik'
 
-nom_server_fqdn="prueba.local.loc"
-nom_server_kuma_fqdn="kuma.prueba.local.loc"
-host_name_proxy="traefik.prueba.local.loc"
+nom_server_fqdn="millionx.sdslab.cat"
+nom_server_kuma_fqdn="kuma.millionx.sdslab.cat"
+host_name_proxy="traefik.millionx.sdslab.cat"
 dir_volum="/volums/wordpress-traefik-kuma"
 dir_wp_db="$dir_volum/wp_db"
 dir_wp_www="$dir_volum/www_html"

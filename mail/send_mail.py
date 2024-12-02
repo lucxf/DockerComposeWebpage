@@ -8,6 +8,7 @@ import sys
 
 load_dotenv()
 
+# Cogemos las variables de entorno
 password = os.getenv("PASSWORD_MAIL_KUMA")
 mail = os.getenv("MAIL_KUMA")
 
@@ -15,6 +16,7 @@ mail = os.getenv("MAIL_KUMA")
 subject = sys.argv[1]
 body = sys.argv[2]
 
+# Preparamos el email
 em = EmailMessage()
 em["From"] = mail
 em["To"] = mail
