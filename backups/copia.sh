@@ -3,7 +3,7 @@
 # MAX copias en total
 MAX_NUM_BKPS=5
 # Donde guardamos los backups
-DIR_FINAL_BKP="/test/backups"
+DIR_FINAL_BKP="/mnt/nas/backups"
 # Donde guardamos backups en local
 DIR_LOCAL_BKP="/etc/backups"
 # Directorio donde están los volúmenes
