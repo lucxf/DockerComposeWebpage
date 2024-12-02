@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # MAX copias en total
-MAX_NUM_BKPS=5
+MAX_NUM_BKPS=15
 # Donde guardamos los backups
 DIR_FINAL_BKP="/mnt/nas/backups"
 # Donde guardamos backups en local
