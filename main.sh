@@ -109,7 +109,4 @@ fi
 echo -e "\033[32mRestauración realizada correctamente\033[0m"
 
 
-python3 -m venv myenv
-
-
 echo -e "\033[32mProceso de creación finalizado correctamente\033[0m"
