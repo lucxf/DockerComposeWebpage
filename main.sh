@@ -13,6 +13,10 @@ DIR_TEMP="/etc/temp_volumes"
 # Definir archivo de log
 LOGFILE="/var/log/Project/installation.log"
 
+BACKUP_PATH="/home/sds/DockerComposeWebpage/backups/copia.sh"
+HORA=2
+MINUTOS=00
+
 # Función para registrar mensajes en el log y mostrar los errores en pantalla
 log_error() {
     # Registrar el error en el archivo de log
