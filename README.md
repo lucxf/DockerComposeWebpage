@@ -1,6 +1,6 @@
 # MillionX project Creation
 
-![alt text](.images/<LOGO SIN FONDO.png>)
+![alt text](.images/LOGO.png)
 
 Para poder crear nuestra web desde cero:
 
