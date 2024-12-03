@@ -101,7 +101,14 @@ fi
 
 echo -e "\033[32mRestauración realizada correctamente\033[0m"
 
+
+
 log_info "Configurando Backup automaticamente"
+
+if ! chmod +x $BACKUP_PATH | crontab -; then
+    log_error "Error al otorgar permisos a $BACKUP_PATH."
+fi
+
 if ! echo "$MINUTOS $HORA * * * $BACKUP_PATH" | crontab -; then
     log_error "Error al crear fichero de cron."
 fi
