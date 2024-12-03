@@ -113,7 +113,14 @@ if ! echo "$MINUTOS $HORA * * * $BACKUP_PATH" | crontab -; then
     log_error "Error al crear fichero de cron."
 fi
 
-echo -e "\033[32mRestauración realizada correctamente\033[0m"
+apt install python3.12-venv
 
+python3 -m venv myenv
+
+source myenv/bin/activate
+
+pip install python-dotenv
+
+deactivate
 
 echo -e "\033[32mProceso de creación finalizado correctamente\033[0m"
