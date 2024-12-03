@@ -96,3 +96,10 @@ if ! ./backups/restore.sh; then
 fi
 
 echo -e "\033[32mRestauración realizada correctamente\033[0m"
+
+log_info "Configurando Backup automaticamente"
+if ! echo "$MINUTOS $HORA * * * $BACKUP_PATH" | crontab -; then
+    log_error "Error al crear fichero de cron."
+fi
+
+echo -e "\033[32mRestauración realizada correctamente\033[0m"
