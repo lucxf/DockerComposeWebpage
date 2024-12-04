@@ -116,7 +116,7 @@ if ! systemctl restart cron; then
 fiv
 
 # Instalamos lo necesario para poder ejecutar send_mail.py
-if ! apt install python3.12-venv; then
+if ! apt install python3.12-venv -y; then
     log_error "Error al instalar python3.12-venv"
 fi
 
