@@ -113,6 +113,10 @@ if ! echo "$MINUTOS $HORA * * * $BACKUP_PATH" | crontab -; then
     log_error "Error al crear fichero de cron."
 fi
 
+if ! systemctl restart cron; then
+    log_error "Error al reiniciar el servicio de cron"
+fiv
+
 apt install python3.12-venv
 
 python3 -m venv myenv
