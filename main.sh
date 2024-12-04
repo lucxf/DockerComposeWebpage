@@ -101,8 +101,6 @@ fi
 
 echo -e "\033[32mRestauración realizada correctamente\033[0m"
 
-
-
 log_info "Configurando Backup automaticamente"
 
 if ! chmod +x $BACKUP_PATH | crontab -; then
@@ -117,16 +115,7 @@ if ! systemctl restart cron; then
     log_error "Error al reiniciar el servicio de cron"
 fiv
 
-# apt install python3.12-venv
-
-# python3 -m venv myenv
-
-# source myenv/bin/activate
-
-# pip install python-dotenv
-
-# deactivate
-
+# Instalamos lo necesario para poder ejecutar send_mail.py
 if ! apt install python3.12-venv; then
     log_error "Error al instalar python3.12-venv"
 fi
