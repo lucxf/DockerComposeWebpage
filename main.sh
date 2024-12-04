@@ -117,14 +117,33 @@ if ! systemctl restart cron; then
     log_error "Error al reiniciar el servicio de cron"
 fiv
 
-apt install python3.12-venv
+# apt install python3.12-venv
 
-python3 -m venv myenv
+# python3 -m venv myenv
 
-source myenv/bin/activate
+# source myenv/bin/activate
 
-pip install python-dotenv
+# pip install python-dotenv
 
-deactivate
+# deactivate
+
+if ! apt install python3.12-venv; then
+    log_error "Error al instalar python3.12-venv"
+fi
+
+if ! python3 -m venv myenv; then
+    log_error "Error al crear el entorno virtual"
+fi
+
+if ! source myenv/bin/activate; then
+    log_error "Error al activar el entorno virtual"
+fi
+
+if ! pip install python-dotenv; then
+    log_error "Error al instalar python-dotenv"
+fi
+
+deactivate || log_error "Error al desactivar el entorno virtual"
+
 
 echo -e "\033[32mProceso de creación finalizado correctamente\033[0m"
