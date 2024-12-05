@@ -88,6 +88,9 @@ echo -e "\033[32mEstructura creada correctamente\033[0m"
 
 log_info "Iniciando proceso de restauración..."
 chmod +x ./backups/restore.sh
+# Le passamos como parametro el directorio local de donde sacar el backup
+# pero al passareselo así solo lo usará en esta ejecución del restore
+# no cambiará la configuración del script de restore
 if ! ./backups/restore.sh "$DIR_ORIGINAL_BACKUP"; then
     log_error "Error al iniciar el proceso de restauración."
 fi
