@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Donde guardamos los backups
-DIR_FINAL_BKP="/mnt/nas/backups"
+DIR_FINAL_BKP="${1:-/mnt/nas/backups}"
 # Donde guardamos backups en local
 DIR_LOCAL_BKP="/etc/backups"
 # Directorio de los volumenes originales

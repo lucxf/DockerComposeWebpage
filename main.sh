@@ -96,7 +96,7 @@ echo -e "\033[32mEstructura creada correctamente\033[0m"
 
 log_info "Iniciando proceso de restauración..."
 chmod +x ./backups/restore.sh
-if ! env DIR_FINAL_BKP="$DIR_ORIGINAL_BACKUP" ./backups/restore.sh; then
+if ! ./backups/restore.sh "$DIR_ORIGINAL_BACKUP"; then
     log_error "Error al iniciar el proceso de restauración."
 fi
 
