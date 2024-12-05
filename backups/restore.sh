@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Donde guardamos los backups
+# Donde guardamos los backups, permitimos la entrada de parametros
+# Cuando ejecutemos el script semilla lo utilizaremos
 DIR_FINAL_BKP="${1:-/mnt/nas/backups}"
 # Donde guardamos backups en local
 DIR_LOCAL_BKP="/etc/backups"
