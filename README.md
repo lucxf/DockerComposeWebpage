@@ -11,6 +11,13 @@ chmod +x main.sh
 ./main.sh
 ```
 
-Este script sigue la siguiente estructura:
+Este script no configura el tunel VPN automáticamente.
+Para poder configurar correctamente ejecuta el script `tunel.sh`
+(asegurate de tener las variables adaptadas a tu caso)
 
-![alt text](.images/image.png)
+```bash
+# Haremos ejecutable el fichero 
+chmod +x ./tools/tunel.sh
+# Ejecutamos para crear el tunel
+./tools/tunel.sh
+```
