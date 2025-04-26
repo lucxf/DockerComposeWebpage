@@ -81,18 +81,27 @@ fi
 
 echo -e "\033[32mEstructura creada correctamente\033[0m"
 
-# Creare el tunel VPN y luego hago un restore a partir de una copia
+read -p "¿Dispones de backups? (s/n): " respuesta
 
-log_info "Creando conexion sshfs..."
-chmod +x ./tools/tunel.sh
-if ! ./tools/tunel.sh; then
-    log_error "Error al crear conexión con sshfs"
+if [[ "$respuesta" == "s" || "$respuesta" == "S" ]]; then
+
+    # Creare el tunel VPN y luego hago un restore a partir de una copia
+
+    log_info "Creando conexion sshfs..."
+    chmod +x ./tools/tunel.sh
+    if ! ./tools/tunel.sh; then
+        log_error "Error al crear conexión con sshfs"
+    fi
+
+    log_info "Iniciando proceso de restauración..."
+    chmod +x ./backups/restore.sh
+    if ! ./backups/restore.sh; then
+        log_error "Error al iniciar el proceso de restauración."
+    fi
+
+    echo -e "\033[32mRestauración realizada correctamente\033[0m"
+else
+    log_info "Script Finalizado correctamente 😊"
 fi
 
-log_info "Iniciando proceso de restauración..."
-chmod +x ./backups/restore.sh
-if ! ./backups/restore.sh; then
-    log_error "Error al iniciar el proceso de restauración."
-fi
 
-echo -e "\033[32mRestauración realizada correctamente\033[0m"
