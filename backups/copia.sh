@@ -3,15 +3,15 @@
 # MAX copias en total
 MAX_NUM_BKPS=5
 # Donde guardamos los backups
-DIR_FINAL_BKP="/test/backups"
+DIR_FINAL_BKP="../backups"
 # Donde guardamos backups en local
-DIR_LOCAL_BKP="/etc/backups"
+DIR_LOCAL_BKP="../backups"
 # Directorio donde están los volúmenes
 DIR_ORIGINAL="/volums/wordpress-traefik-kuma"
 # Path del fichero docker-compose
 DCOMPOSE_PATH="./estructura/mycompose-wordpress-traefik-kuma-server.yml"
 # IP de la máquina de backups
-IP=100.115.56.56
+IP=192.168.0.18
 # Archivo de log
 LOGFILE="/var/log/Project/backup.log"
 
