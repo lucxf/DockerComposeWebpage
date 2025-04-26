@@ -3,8 +3,8 @@
 # Archivo de log
 LOGFILE="/var/log/Project/bind_installation.log"
 # Zona DNS
-DOMAIN="prueba.local.loc"
-IP="192.168.0.155"
+DOMAIN="tarsan21.loc"
+IP="192.168.0.18"
 USER="lucxf"
 ZONE_FILE="/etc/bind/$DOMAIN"
 
